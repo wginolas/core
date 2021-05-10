@@ -14,6 +14,10 @@ include(../../Common/base.pri)
 #BOOST
 include($$PWD/../../Common/3dParty/boost/boost.pri)
 
+CONFIG += precompile_header
+PRECOMPILED_HEADER = precompiled.h
+
+
 DEFINES += UNICODE \
 	_UNICODE \
 	SOLUTION_ASCOFFICEDOCXFILE2 \
