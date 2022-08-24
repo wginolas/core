@@ -47,7 +47,6 @@ namespace NSDocxRenderer
 
             eVertAlignType m_eVertAlignType {eVertAlignType::vatUnknown};
 
-            CFontManagerLight* m_pManagerLight {nullptr};
             CStyleManager*     m_pStyleManager {nullptr};
 
             CShape*    m_pShape {nullptr}; //Если не nullptr, то есть фоновая графика - можно анализировать.
@@ -56,8 +55,12 @@ namespace NSDocxRenderer
             UINT m_iNumDuplicates {0};
 
         public:
-            CContText(CFontManagerLight* pManagerLight, CStyleManager* pStyleManager);
+            CContText(CStyleManager* pStyleManager);
             ~CContText();
+
+            CContText(const CContText& oSrc);
+
+            CContText& operator=(const CContText& oSrc);
 
             void Clear() override final;
 

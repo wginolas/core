@@ -5,8 +5,8 @@
 
 namespace NSDocxRenderer
 {
-    CContText::CContText(CFontManagerLight* pManagerLight, CStyleManager* pStyleManager):
-        CBaseItem(ElemType::etContText), m_pManagerLight(pManagerLight), m_pStyleManager(pStyleManager)
+    CContText::CContText(CStyleManager* pStyleManager):
+        CBaseItem(ElemType::etContText), m_pStyleManager(pStyleManager)
     {
     }
 
@@ -18,6 +18,55 @@ namespace NSDocxRenderer
     void CContText::Clear()
     {
         m_pFontStyle = nullptr;
+    }
+
+    CContText::CContText(const CContText& oSrc): CBaseItem(ElemType::etContText)
+    {
+        *this = oSrc;
+    }
+
+    CContText& CContText::operator=(const CContText& oSrc)
+    {
+        if (this == &oSrc)
+        {
+            return *this;
+        }
+
+        CBaseItem::operator=(oSrc);
+
+        m_pFontStyle = oSrc.m_pFontStyle;
+
+        m_bIsStrikeoutPresent = oSrc.m_bIsStrikeoutPresent;
+        m_bIsDoubleStrikeout = oSrc.m_bIsDoubleStrikeout;
+
+        m_bIsHighlightPresent = oSrc.m_bIsHighlightPresent;
+        m_lHighlightColor = oSrc.m_lHighlightColor;
+
+        m_bIsUnderlinePresent = oSrc.m_bIsUnderlinePresent;
+        m_eUnderlineType = oSrc.m_eUnderlineType;
+        m_lUnderlineColor = oSrc.m_lUnderlineColor;
+
+        m_bIsShadowPresent = oSrc.m_bIsShadowPresent;
+        m_bIsOutlinePresent = oSrc.m_bIsOutlinePresent;
+        m_bIsEmbossPresent = oSrc.m_bIsEmbossPresent;
+        m_bIsEngravePresent = oSrc.m_bIsEngravePresent;
+
+        m_oText = oSrc.m_oText;
+
+        m_dLastX = oSrc.m_dLastX;
+        m_dSpaceWidthMM = oSrc.m_dSpaceWidthMM;
+        m_bSpaceIsNotNeeded = oSrc.m_bSpaceIsNotNeeded;
+
+        m_eVertAlignType = oSrc.m_eVertAlignType;
+
+        m_pStyleManager = oSrc.m_pStyleManager;
+
+        m_pShape    = oSrc.m_pShape;
+        m_pCont = oSrc.m_pCont;
+
+        m_iNumDuplicates = oSrc.m_iNumDuplicates;
+
+        return *this;
     }
 
     double CContText::GetIntersect(const CContText* pCont) const
@@ -52,8 +101,8 @@ namespace NSDocxRenderer
                 m_eVertAlignType != eVertAlignType::vatSuperscript)
             {
                 // нужно перемерять...
-                m_pManagerLight->LoadFont(m_pFontStyle->m_strPickFontName, m_pFontStyle->m_lPickFontStyle, m_pFontStyle->m_oFont.Size, false);
-                double dWidth = m_pManagerLight->MeasureStringWidth(m_oText.ToStdWString());
+                m_pStyleManager->m_oFontManagerLight.LoadFont(m_pFontStyle->m_strPickFontName, m_pFontStyle->m_lPickFontStyle, m_pFontStyle->m_oFont.Size, false);
+                double dWidth = m_pStyleManager->m_oFontManagerLight.MeasureStringWidth(m_oText.ToStdWString());
 
                 double dSpacing = (m_dWidth - dWidth) / (m_oText.length());
                 dSpacing *= c_dMMToDx;
@@ -167,7 +216,7 @@ namespace NSDocxRenderer
         double dSpaceMMSize = m_dSpaceWidthMM;
         if (!m_pFontStyle->m_strPickFontName.empty())
         {
-            dSpaceMMSize = m_pManagerLight->GetSpaceWidth();
+            dSpaceMMSize = m_pStyleManager->m_oFontManagerLight.GetSpaceWidth();
         }
 
         LONG lCalculatedSpacing = static_cast<LONG>((dSpacingMM - dSpaceMMSize) * c_dMMToDx);

@@ -10,14 +10,7 @@ namespace NSDocxRenderer
     class CPage
     {
     public:
-        NSStructures::CFont*		m_pFont {nullptr};
-        NSStructures::CPen*			m_pPen {nullptr};
-        NSStructures::CBrush*		m_pBrush {nullptr};
-        NSStructures::CShadow*		m_pShadow {nullptr};
-        NSStructures::CEdgeText*	m_pEdgeText {nullptr};
-
         Aggplus::CMatrix*			m_pTransform {nullptr};
-        Aggplus::CGraphicsPathSimpleConverter* m_pSimpleGraphicsConverter {nullptr};
 
         CStyleManager*              m_pStyleManager {nullptr};
 
@@ -36,9 +29,6 @@ namespace NSDocxRenderer
 
         CTextLine* m_pCurrentLine {nullptr};
 
-        CFontManager		m_oFontManager;
-        CFontManagerLight	m_oFontManagerLight;
-
         TextAssociationType m_eTextAssociationType {tatPlainLine};
 
         bool m_bIsDeleteTextClipPage {true};
@@ -48,11 +38,9 @@ namespace NSDocxRenderer
         double m_dLastTextX_block {-1};
 
     public:
-        CPage(NSFonts::IApplicationFonts* pFonts);
+        CPage(){}
         ~CPage();
-        void Init(NSStructures::CFont* pFont, NSStructures::CPen* pPen, NSStructures::CBrush* pBrush,
-            NSStructures::CShadow* pShadow, NSStructures::CEdgeText* pEdge, Aggplus::CMatrix* pMatrix,
-            Aggplus::CGraphicsPathSimpleConverter* pSimple, CStyleManager* pStyleManager);
+        void Init(Aggplus::CMatrix* pMatrix, CStyleManager* pStyleManager);
 
         void Clear();
         void ClearImages();

@@ -31,6 +31,7 @@ namespace NSDocxRenderer
     void CFontManager::Init()
     {
         m_oFontTable.m_mapTable.clear();
+        ClearPickUps();
     }
 
     void CFontManager::AddFontToMap()

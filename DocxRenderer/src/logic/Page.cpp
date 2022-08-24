@@ -6,27 +6,10 @@
 
 namespace NSDocxRenderer
 {
-    CPage::CPage(NSFonts::IApplicationFonts* pFonts) : m_oFontManager(pFonts), m_oFontManagerLight(pFonts)
+    void CPage::Init(Aggplus::CMatrix* pMatrix, CStyleManager* pStyleManager)
     {
-    }
-
-    void CPage::Init(NSStructures::CFont* pFont, NSStructures::CPen* pPen, NSStructures::CBrush* pBrush,
-                     NSStructures::CShadow* pShadow, NSStructures::CEdgeText* pEdge, Aggplus::CMatrix* pMatrix,
-                     Aggplus::CGraphicsPathSimpleConverter* pSimple, CStyleManager* pStyleManager)
-    {
-        m_pFont		= pFont;
-        m_pPen		= pPen;
-        m_pBrush	= pBrush;
-        m_pShadow	= pShadow;
-        m_pEdgeText	= pEdge;
-
-        m_pTransform				= pMatrix;
-        m_pSimpleGraphicsConverter	= pSimple;
-
+        m_pTransform    = pMatrix;
         m_pStyleManager = pStyleManager;
-
-        m_oFontManager.m_pFont			= m_pFont;
-        m_oFontManager.m_pTransform		= m_pTransform;
 
         m_pCurrentLine = nullptr;
 
@@ -230,8 +213,8 @@ namespace NSDocxRenderer
         {
             auto pShape = new CShape();
 
-            pShape->m_oPen		 = *m_pPen;
-            pShape->m_oBrush	 = *m_pBrush;
+            pShape->m_oPen		 = m_pStyleManager->m_oPen;
+            pShape->m_oBrush	 = m_pStyleManager->m_oBrush;
 
             if (pInfo)
             {
@@ -245,7 +228,7 @@ namespace NSDocxRenderer
 
             //Все белые прямоугольники-подложки на задний фон
             //todo задать приоритеты отображения шейпов
-            if (0x00 != (lType >> 8) && m_pBrush->Color1 == c_iWhiteColor)
+            if (0x00 != (lType >> 8) && m_pStyleManager->m_oBrush.Color1 == c_iWhiteColor)
             {
                 pShape->m_bIsBehindDoc = true;
             }
@@ -255,8 +238,8 @@ namespace NSDocxRenderer
                 if ((fabs(m_oVector.m_dLeft - m_oVector.m_dRight) < 0.3) || (fabs(m_oVector.m_dTop - m_oVector.m_dBottom) < 0.3))
                 {
                     lType = 0x01;
-                    pShape->m_oPen.Color = m_pBrush->Color1;
-                    pShape->m_oPen.Alpha = m_pBrush->Alpha1;
+                    pShape->m_oPen.Color = m_pStyleManager->m_oBrush.Color1;
+                    pShape->m_oPen.Alpha = m_pStyleManager->m_oBrush.Alpha1;
                     //pShape->m_oPen.Size	 = max(pShape->m_oPen.Size, 1);
                 }
             }
@@ -303,10 +286,10 @@ namespace NSDocxRenderer
 
         bool bIsPath = ((nullptr == pGids) && !bIsPDFAnalyzer) ? false : true;
 
-        m_oFontManager.LoadFont(0, !bIsPath);
+        m_pStyleManager->m_oFontManager.LoadFont(0, !bIsPath);
 
         if (bIsPath)
-            m_oFontManager.GenerateFontName2(oText);
+            m_pStyleManager->m_oFontManager.GenerateFontName2(oText);
 
         if (fabs(dTextW) < 0.01 || (dTextW > 10))
         {
@@ -317,29 +300,29 @@ namespace NSDocxRenderer
 
             if (nullptr != pGids)
             {
-                m_oFontManager.SetStringGid(1);
-                m_oFontManager.MeasureStringGids(pGids, nCount, dTextX, dTextY, _x, _y, _w, _h, CFontManager::mtPosition);
+                m_pStyleManager->m_oFontManager.SetStringGid(1);
+                m_pStyleManager->m_oFontManager.MeasureStringGids(pGids, nCount, dTextX, dTextY, _x, _y, _w, _h, CFontManager::mtPosition);
             }
             else
             {
                 // такого быть не должно (только из xps)
-                m_oFontManager.SetStringGid(0);
-                m_oFontManager.MeasureStringGids(pUnicodes, nCount, dTextX, dTextY, _x, _y, _w, _h, CFontManager::mtPosition);
+                m_pStyleManager->m_oFontManager.SetStringGid(0);
+                m_pStyleManager->m_oFontManager.MeasureStringGids(pUnicodes, nCount, dTextX, dTextY, _x, _y, _w, _h, CFontManager::mtPosition);
             }
 
             dTextW = _w;
         }
 
         double dBaseLinePos = dTextY + fBaseLineOffset;
-        dTextH = m_oFontManager.GetFontHeight();
+        dTextH = m_pStyleManager->m_oFontManager.GetFontHeight();
 
-        auto pCont = new CContText(&m_oFontManagerLight, m_pStyleManager);
+        auto pCont = new CContText(m_pStyleManager);
 
         pCont->m_dLeft = dTextX;
         pCont->m_dBaselinePos = dBaseLinePos;
         pCont->m_dLastX = dTextX;
 
-        pCont->m_dTop       = dBaseLinePos - dTextH - m_oFontManager.m_oFont.m_dBaselineOffset;
+        pCont->m_dTop       = dBaseLinePos - dTextH - m_pStyleManager->m_oFontManager.m_oFont.m_dBaselineOffset;
         pCont->m_dWidth		= dTextW;
         pCont->m_dHeight	= dTextH;
         pCont->m_dRight     = dTextX + dTextW;
@@ -347,18 +330,9 @@ namespace NSDocxRenderer
         pCont->m_oText = oText;
 
         //Первичное заполнение стилей
-        m_pStyleManager->m_pCurrentStyle->m_oFont = m_oFontManager.m_oFont.m_oFont;
-        m_pStyleManager->m_pCurrentStyle->m_oBrush = *m_pBrush;
+        pCont->m_pFontStyle = m_pStyleManager->GetCurrentStyle();
 
-        if (bIsPath)
-        {
-            m_pStyleManager->m_pCurrentStyle->m_strPickFontName = m_oFontManager.m_strCurrentPickFont;
-            m_pStyleManager->m_pCurrentStyle->m_lPickFontStyle  = m_oFontManager.m_lCurrentPictFontStyle;
-        }
-
-        pCont->m_pFontStyle = m_pStyleManager->GetStyle();
-
-        pCont->m_dSpaceWidthMM = m_oFontManager.m_dSpaceWidthMM;
+        pCont->m_dSpaceWidthMM = m_pStyleManager->m_oFontManager.m_dSpaceWidthMM;
 
         m_arSymbol.push_back(pCont);
     }
@@ -629,9 +603,12 @@ namespace NSDocxRenderer
                     {
                         if (!bIf2)
                         {
-                            m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
-                            m_pStyleManager->m_pCurrentStyle->m_oBrush.Color1 = pShape->m_oPen.Color;
-                            pCont->m_pFontStyle = m_pStyleManager->GetStyle();
+                            auto pTempStyle = std::make_shared<CFontStyle>();
+                            pTempStyle->CopyFormat(*pCont->m_pFontStyle);
+                            pTempStyle->m_oBrush.Color1 = pShape->m_oPen.Color;
+                            //m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
+                           // m_pStyleManager->m_pCurrentStyle->m_oBrush.Color1 = pShape->m_oPen.Color;
+                            pCont->m_pFontStyle = m_pStyleManager->GetStyle(pTempStyle);
 
                             pCont->m_bIsShadowPresent = true;
                             pCont->m_bIsOutlinePresent = true;
@@ -966,9 +943,12 @@ namespace NSDocxRenderer
                         if (pCont->m_pCont)
                         {
                             //pCont->m_pFontStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
-                            m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
-                            m_pStyleManager->m_pCurrentStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
-                            pCont->m_pFontStyle = m_pStyleManager->GetStyle();
+                            auto pTempStyle = std::make_shared<CFontStyle>();
+                            pTempStyle->CopyFormat(*pCont->m_pFontStyle);
+                            pTempStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
+                            //m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
+                            //m_pStyleManager->m_pCurrentStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
+                            pCont->m_pFontStyle = m_pStyleManager->GetStyle(pTempStyle);
                         }
 
                         if (pLineNext->m_dLeft > pCont->m_dLeft)
@@ -990,9 +970,12 @@ namespace NSDocxRenderer
                         if (pCont->m_pCont)
                         {
                             //pCont->m_pFontStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
-                            m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
-                            m_pStyleManager->m_pCurrentStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
-                            pCont->m_pFontStyle = m_pStyleManager->GetStyle();
+                            auto pTempStyle = std::make_shared<CFontStyle>();
+                            pTempStyle->CopyFormat(*pCont->m_pFontStyle);
+                            pTempStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
+                            //m_pStyleManager->m_pCurrentStyle->CopyFormat(*pCont->m_pFontStyle);
+                            //m_pStyleManager->m_pCurrentStyle->m_oFont.Size = pCont->m_pCont->m_pFontStyle->m_oFont.Size;
+                            pCont->m_pFontStyle = m_pStyleManager->GetStyle(pTempStyle);
                         }
 
                         if (pLine->m_dLeft > pCont->m_dLeft)

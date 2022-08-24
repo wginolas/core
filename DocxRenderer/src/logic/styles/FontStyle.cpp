@@ -6,16 +6,6 @@ namespace NSDocxRenderer
 {
     CFontStyle::CFontStyle() : CBaseStyle(CBaseStyle::eStyleType::stCharacter)
     {
-        static UINT iId = 0;
-        iId++;
-        if (iId < 10)
-        {
-            m_strStyleId = L"fontstyle0" + std::to_wstring(iId);
-        }
-        else
-        {
-            m_strStyleId = L"fontstyle" + std::to_wstring(iId);
-        }
     }
 
     CFontStyle& CFontStyle::operator=(const CFontStyle& oSrc)
@@ -87,6 +77,20 @@ namespace NSDocxRenderer
             return true;
         }
         return false;
+    }
+
+    void CFontStyle::GenerateFontStyleId()
+    {
+        static UINT iId = 0;
+        iId++;
+        if (iId < 10)
+        {
+            m_strStyleId = L"fontstyle0" + std::to_wstring(iId);
+        }
+        else
+        {
+            m_strStyleId = L"fontstyle" + std::to_wstring(iId);
+        }
     }
     \
     void CFontStyle::ToXml(NSStringUtils::CStringBuilder& oWriter)

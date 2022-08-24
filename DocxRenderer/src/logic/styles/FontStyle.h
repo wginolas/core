@@ -29,6 +29,8 @@ namespace NSDocxRenderer
 
             bool IsEqual(std::shared_ptr<CFontStyle> oSrc);
 
+            void GenerateFontStyleId();
+
             std::wstring GetStyleId() {return m_strStyleId;}
     };
 }

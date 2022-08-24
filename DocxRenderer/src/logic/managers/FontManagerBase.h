@@ -109,8 +109,12 @@ namespace NSFontManager
             CUnicodeRanges                  m_oRanges;
 
             std::list<CFontPickUp>			m_arListPicUps;
+
             std::wstring					m_strCurrentPickFont;
+            bool m_bCurrentPickFontWasChanged {false};
+
             LONG							m_lCurrentPictFontStyle;
+            bool m_bCurrentPictFontStyleWasChanged {false};
 
         public:
             CFontManagerBase(NSFonts::IApplicationFonts* pFonts);

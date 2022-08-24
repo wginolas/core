@@ -3,19 +3,13 @@
 namespace NSDocxRenderer
 {
     CDocument::CDocument(IRenderer* pRenderer, NSFonts::IApplicationFonts* pFonts) :
-        m_pAppFonts(pFonts), m_oCurrentPage(pFonts)
+        m_pAppFonts(pFonts), m_oStyleManager(pFonts)
     {
         m_oSimpleGraphicsConverter.SetRenderer(pRenderer);
         m_oWriter.AddSize(10000);
     }
     void CDocument::Clear()
     {
-        m_oPen.SetDefaultParams();
-        m_oBrush.SetDefaultParams();
-        m_oFont.SetDefaultParams();
-        m_oShadow.SetDefaultParams();
-        m_oEdge.SetDefaultParams();
-
         m_oTransform.Reset();
 
         m_lClipMode = 0;
@@ -37,12 +31,6 @@ namespace NSDocxRenderer
             m_oDocumentStream.WriteStringUTF8(m_oWriter.GetData());
             m_oWriter.ClearNoAttack();
         }
-
-        m_oPen.SetDefaultParams();
-        m_oBrush.SetDefaultParams();
-        m_oFont.SetDefaultParams();
-        m_oShadow.SetDefaultParams();
-        m_oEdge.SetDefaultParams();
 
         m_oTransform.Reset();
 
@@ -87,109 +75,109 @@ namespace NSDocxRenderer
     // pen --------------------------------------------------------------------------------------
     HRESULT CDocument::get_PenColor(LONG* lColor)
     {
-        *lColor = m_oPen.Color;
+        *lColor = m_oStyleManager.m_oPen.Color;
         return S_OK;
     }
     HRESULT CDocument::put_PenColor(LONG lColor)
     {
-        m_oPen.Color = lColor;
+        m_oStyleManager.m_oPen.Color = lColor;
         return S_OK;
     }
     HRESULT CDocument::get_PenAlpha(LONG* lAlpha)
     {
-        *lAlpha = m_oPen.Alpha;
+        *lAlpha = m_oStyleManager.m_oPen.Alpha;
         return S_OK;
     }
     HRESULT CDocument::put_PenAlpha(LONG lAlpha)
     {
-        m_oPen.Alpha = lAlpha;
+        m_oStyleManager.m_oPen.Alpha = lAlpha;
         return S_OK;
     }
     HRESULT CDocument::get_PenSize(double* dSize)
     {
-        *dSize = m_oPen.Size;
+        *dSize = m_oStyleManager.m_oPen.Size;
         return S_OK;
     }
     HRESULT CDocument::put_PenSize(double dSize)
     {
-        m_oPen.Size = dSize;
+        m_oStyleManager.m_oPen.Size = dSize;
         return S_OK;
     }
     HRESULT CDocument::get_PenDashStyle(BYTE* val)
     {
-        *val = m_oPen.DashStyle;
+        *val = m_oStyleManager.m_oPen.DashStyle;
         return S_OK;
     }
     HRESULT CDocument::put_PenDashStyle(BYTE val)
     {
-        m_oPen.DashStyle = val;
+        m_oStyleManager.m_oPen.DashStyle = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenLineStartCap(BYTE* val)
     {
-        *val = m_oPen.LineStartCap;
+        *val = m_oStyleManager.m_oPen.LineStartCap;
         return S_OK;
     }
     HRESULT CDocument::put_PenLineStartCap(BYTE val)
     {
-        m_oPen.LineStartCap = val;
+        m_oStyleManager.m_oPen.LineStartCap = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenLineEndCap(BYTE* val)
     {
-        *val = m_oPen.LineEndCap;
+        *val = m_oStyleManager.m_oPen.LineEndCap;
         return S_OK;
     }
     HRESULT CDocument::put_PenLineEndCap(BYTE val)
     {
-        m_oPen.LineEndCap = val;
+        m_oStyleManager.m_oPen.LineEndCap = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenLineJoin(BYTE* val)
     {
-        *val = m_oPen.LineJoin;
+        *val = m_oStyleManager.m_oPen.LineJoin;
         return S_OK;
     }
     HRESULT CDocument::put_PenLineJoin(BYTE val)
     {
-        m_oPen.LineJoin = val;
+        m_oStyleManager.m_oPen.LineJoin = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenDashOffset(double* val)
     {
-        *val = m_oPen.DashOffset;
+        *val = m_oStyleManager.m_oPen.DashOffset;
         return S_OK;
     }
     HRESULT CDocument::put_PenDashOffset(double val)
     {
-        m_oPen.DashOffset = val;
+        m_oStyleManager.m_oPen.DashOffset = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenAlign(LONG* val)
     {
-        *val = m_oPen.Align;
+        *val = m_oStyleManager.m_oPen.Align;
         return S_OK;
     }
     HRESULT CDocument::put_PenAlign(LONG val)
     {
-        m_oPen.Align = val;
+        m_oStyleManager.m_oPen.Align = val;
         return S_OK;
     }
     HRESULT CDocument::get_PenMiterLimit(double* val)
     {
-        *val = m_oPen.MiterLimit;
+        *val = m_oStyleManager.m_oPen.MiterLimit;
         return S_OK;
     }
     HRESULT CDocument::put_PenMiterLimit(double val)
     {
-        m_oPen.MiterLimit = val;
+        m_oStyleManager.m_oPen.MiterLimit = val;
         return S_OK;
     }
     HRESULT CDocument::PenDashPattern(double* pPattern, LONG lCount)
     {
         if (nullptr != pPattern)
         {
-            m_oPen.SetDashPattern(pPattern, lCount);
+            m_oStyleManager.m_oPen.SetDashPattern(pPattern, lCount);
         }
 
         return S_OK;
@@ -197,275 +185,347 @@ namespace NSDocxRenderer
     // brush ------------------------------------------------------------------------------------
     HRESULT CDocument::get_BrushType(LONG* lType)
     {
-        *lType = m_oBrush.Type;
+        *lType = m_oStyleManager.m_oBrush.Type;
         return S_OK;
     }
     HRESULT CDocument::put_BrushType(LONG lType)
     {
-        m_oBrush.Type = lType;
+        if (m_oStyleManager.m_oBrush.Type != lType)
+        {
+            m_oStyleManager.m_oBrush.Type = lType;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushColor1(LONG* lColor)
     {
-        *lColor = m_oBrush.Color1;
+        *lColor = m_oStyleManager.m_oBrush.Color1;
         return S_OK;
     }
     HRESULT CDocument::put_BrushColor1(LONG lColor)
     {
-        m_oBrush.Color1 = lColor;
+        if (m_oStyleManager.m_oBrush.Color1 != lColor)
+        {
+            m_oStyleManager.m_oBrush.Color1 = lColor;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushAlpha1(LONG* lAlpha)
     {
-        *lAlpha = m_oBrush.Alpha1;
+        *lAlpha = m_oStyleManager.m_oBrush.Alpha1;
         return S_OK;
     }
     HRESULT CDocument::put_BrushAlpha1(LONG lAlpha)
     {
-        m_oBrush.Alpha1 = lAlpha;
+        if (m_oStyleManager.m_oBrush.Alpha1 != lAlpha)
+        {
+            m_oStyleManager.m_oBrush.Alpha1 = lAlpha;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushColor2(LONG* lColor)
     {
-        *lColor = m_oBrush.Color2;
+        *lColor = m_oStyleManager.m_oBrush.Color2;
         return S_OK;
     }
     HRESULT CDocument::put_BrushColor2(LONG lColor)
     {
-        m_oBrush.Color2 = lColor;
+        if (m_oStyleManager.m_oBrush.Color2 != lColor)
+        {
+            m_oStyleManager.m_oBrush.Color2 = lColor;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushAlpha2(LONG* lAlpha)
     {
-        *lAlpha = m_oBrush.Alpha2;
+        *lAlpha = m_oStyleManager.m_oBrush.Alpha2;
         return S_OK;
     }
     HRESULT CDocument::put_BrushAlpha2(LONG lAlpha)
     {
-        m_oBrush.Alpha2 = lAlpha;
+        if (m_oStyleManager.m_oBrush.Alpha2 != lAlpha)
+        {
+            m_oStyleManager.m_oBrush.Alpha2 = lAlpha;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushTexturePath(std::wstring* sPath)
     {
-        *sPath = m_oBrush.TexturePath;
+        *sPath = m_oStyleManager.m_oBrush.TexturePath;
         return S_OK;
     }
     HRESULT CDocument::put_BrushTexturePath(const std::wstring& sPath)
     {
-        m_oBrush.TexturePath = sPath;
+        if (m_oStyleManager.m_oBrush.TexturePath != sPath)
+        {
+            m_oStyleManager.m_oBrush.TexturePath = sPath;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushTextureMode(LONG* lMode)
     {
-        *lMode = m_oBrush.TextureMode;
+        *lMode = m_oStyleManager.m_oBrush.TextureMode;
         return S_OK;
     }
     HRESULT CDocument::put_BrushTextureMode(LONG lMode)
     {
-        m_oBrush.TextureMode = lMode;
+        if (m_oStyleManager.m_oBrush.TextureMode != lMode)
+        {
+            m_oStyleManager.m_oBrush.TextureMode = lMode;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushTextureAlpha(LONG* lTxAlpha)
     {
-        *lTxAlpha = m_oBrush.TextureAlpha;
+        *lTxAlpha = m_oStyleManager.m_oBrush.TextureAlpha;
         return S_OK;
     }
     HRESULT CDocument::put_BrushTextureAlpha(LONG lTxAlpha)
     {
-        m_oBrush.TextureAlpha = lTxAlpha;
+        if (m_oStyleManager.m_oBrush.TextureAlpha != lTxAlpha)
+        {
+            m_oStyleManager.m_oBrush.TextureAlpha = lTxAlpha;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_BrushLinearAngle(double* dAngle)
     {
-        *dAngle = m_oBrush.LinearAngle;
+        *dAngle = m_oStyleManager.m_oBrush.LinearAngle;
         return S_OK;
     }
     HRESULT CDocument::put_BrushLinearAngle(double dAngle)
     {
-        m_oBrush.LinearAngle = dAngle;
+        if (m_oStyleManager.m_oBrush.LinearAngle != dAngle)
+        {
+            m_oStyleManager.m_oBrush.LinearAngle = dAngle;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::BrushRect(bool val, double left, double top, double width, double height)
     {
-        m_oBrush.Rectable = val ? 1 : 0;
-        m_oBrush.Rect.X = (float)left;
-        m_oBrush.Rect.Y = (float)top;
-        m_oBrush.Rect.Width  = (float)width;
-        m_oBrush.Rect.Height = (float)height;
+        /*if (m_oStyleManager.m_oBrush.Rectable != val ? 1 : 0 ||
+            m_oStyleManager.m_oBrush.Rect.X != (float)left ||
+            m_oStyleManager.m_oBrush.Rect.Y != (float)top ||
+            m_oStyleManager.m_oBrush.Rect.Width != (float)width ||
+            m_oStyleManager.m_oBrush.Rect.Height != (float)height)*/
+        {
+            m_oStyleManager.m_oBrush.Rectable = val ? 1 : 0;
+            m_oStyleManager.m_oBrush.Rect.X = (float)left;
+            m_oStyleManager.m_oBrush.Rect.Y = (float)top;
+            m_oStyleManager.m_oBrush.Rect.Width  = (float)width;
+            m_oStyleManager.m_oBrush.Rect.Height = (float)height;
+            m_oStyleManager.m_bBrushWasChanged = true;
+        }
 
         return S_OK;
     }
     // font -------------------------------------------------------------------------------------
     HRESULT CDocument::get_FontName(std::wstring* sName)
     {
-        *sName = m_oFont.Name;
+        *sName = m_oStyleManager.m_oFont.Name;
         return S_OK;
     }
     HRESULT CDocument::put_FontName(std::wstring sName)
     {
-        m_oFont.Name = sName;
+        if (m_oStyleManager.m_oFont.Name != sName)
+        {
+            m_oStyleManager.m_oFont.Name = sName;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontPath(std::wstring* sPath)
     {
-        *sPath = m_oFont.Path;
+        *sPath = m_oStyleManager.m_oFont.Path;
         return S_OK;
     }
     HRESULT CDocument::put_FontPath(std::wstring sPath)
     {
-        m_oFont.Path = sPath;
+        if (m_oStyleManager.m_oFont.Path != sPath)
+        {
+            m_oStyleManager.m_oFont.Path = sPath;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontSize(double* dSize)
     {
-        *dSize = m_oFont.Size;
+        *dSize = m_oStyleManager.m_oFont.Size;
         return S_OK;
     }
     HRESULT CDocument::put_FontSize(double dSize)
     {
-        m_oFont.Size = dSize;
+        if (m_oStyleManager.m_oFont.Size != dSize)
+        {
+            m_oStyleManager.m_oFont.Size = dSize;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontStyle(LONG* lStyle)
     {
-        *lStyle = m_oFont.GetStyle();
+        *lStyle = m_oStyleManager.m_oFont.GetStyle();
         return S_OK;
     }
     HRESULT CDocument::put_FontStyle(LONG lStyle)
     {
-        m_oFont.SetStyle(lStyle);
+        if (m_oStyleManager.m_oFont.GetStyle() != lStyle)
+        {
+            m_oStyleManager.m_oFont.SetStyle(lStyle);
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontStringGID(INT* bGID)
     {
-        *bGID = m_oFont.StringGID;
+        *bGID = m_oStyleManager.m_oFont.StringGID;
         return S_OK;
     }
     HRESULT CDocument::put_FontStringGID(INT bGID)
     {
-        m_oFont.StringGID = bGID;
+        if (m_oStyleManager.m_oFont.StringGID != bGID)
+        {
+            m_oStyleManager.m_oFont.StringGID = bGID;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontCharSpace(double* dSpace)
     {
-        *dSpace = m_oFont.CharSpace;
+        *dSpace = m_oStyleManager.m_oFont.CharSpace;
         return S_OK;
     }
     HRESULT CDocument::put_FontCharSpace(double dSpace)
     {
-        m_oFont.CharSpace = dSpace;
+        if (m_oStyleManager.m_oFont.CharSpace != dSpace)
+        {
+            m_oStyleManager.m_oFont.CharSpace = dSpace;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     HRESULT CDocument::get_FontFaceIndex(int* lFaceIndex)
     {
-        *lFaceIndex = m_oFont.FaceIndex;
+        *lFaceIndex = m_oStyleManager.m_oFont.FaceIndex;
         return S_OK;
     }
     HRESULT CDocument::put_FontFaceIndex(const int& lFaceIndex)
     {
-        m_oFont.FaceIndex = lFaceIndex;
+        if (m_oStyleManager.m_oFont.FaceIndex != lFaceIndex)
+        {
+            m_oStyleManager.m_oFont.FaceIndex = lFaceIndex;
+            m_oStyleManager.m_bFontWasChanged = true;
+        }
         return S_OK;
     }
     // shadow -----------------------------------------------------------------------------------
     HRESULT CDocument::get_ShadowDistanceX(double* val)
     {
-        *val = m_oShadow.DistanceX;
+        *val = m_oStyleManager.m_oShadow.DistanceX;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowDistanceX(double val)
     {
-        m_oShadow.DistanceX = val;
+        m_oStyleManager.m_oShadow.DistanceX = val;
         return S_OK;
     }
     HRESULT CDocument::get_ShadowDistanceY(double* val)
     {
-        *val = m_oShadow.DistanceY;
+        *val = m_oStyleManager.m_oShadow.DistanceY;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowDistanceY(double val)
     {
-        m_oShadow.DistanceY = val;
+        m_oStyleManager.m_oShadow.DistanceY = val;
         return S_OK;
     }
     HRESULT CDocument::get_ShadowBlurSize(double* val)
     {
-        *val = m_oShadow.BlurSize;
+        *val = m_oStyleManager.m_oShadow.BlurSize;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowBlurSize(double val)
     {
-        m_oShadow.BlurSize = val;
+        m_oStyleManager.m_oShadow.BlurSize = val;
         return S_OK;
     }
     HRESULT CDocument::get_ShadowColor(LONG* val)
     {
-        *val = m_oShadow.Color;
+        *val = m_oStyleManager.m_oShadow.Color;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowColor(LONG val)
     {
-        m_oShadow.Color = val;
+        m_oStyleManager.m_oShadow.Color = val;
         return S_OK;
     }
     HRESULT CDocument::get_ShadowAlpha(LONG* val)
     {
-        *val = m_oShadow.Alpha;
+        *val = m_oStyleManager.m_oShadow.Alpha;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowAlpha(LONG val)
     {
-        m_oShadow.Alpha = val;
+        m_oStyleManager.m_oShadow.Alpha = val;
         return S_OK;
     }
     HRESULT CDocument::get_ShadowVisible(INT* val)
     {
-        *val = m_oShadow.Visible;
+        *val = m_oStyleManager.m_oShadow.Visible;
         return S_OK;
     }
     HRESULT CDocument::put_ShadowVisible(INT val)
     {
-        m_oShadow.Visible = val;
+        m_oStyleManager.m_oShadow.Visible = val;
         return S_OK;
     }
     // edge -------------------------------------------------------------------------------------
     HRESULT CDocument::get_EdgeVisible(LONG* val)
     {
-        *val = m_oEdge.Visible;
+        *val = m_oStyleManager.m_oEdge.Visible;
         return S_OK;
     }
     HRESULT CDocument::put_EdgeVisible(LONG val)
     {
-        m_oEdge.Visible = val;
+        m_oStyleManager.m_oEdge.Visible = val;
         return S_OK;
     }
     HRESULT CDocument::get_EdgeColor(LONG* val)
     {
-        *val = m_oEdge.Color;
+        *val = m_oStyleManager.m_oEdge.Color;
         return S_OK;
     }
     HRESULT CDocument::put_EdgeColor(LONG val)
     {
-        m_oEdge.Color = val;
+        m_oStyleManager.m_oEdge.Color = val;
         return S_OK;
     }
     HRESULT CDocument::get_EdgeAlpha(LONG* val)
     {
-        *val = m_oEdge.Alpha;
+        *val = m_oStyleManager.m_oEdge.Alpha;
         return S_OK;
     }
     HRESULT CDocument::put_EdgeAlpha(LONG val)
     {
-        m_oEdge.Alpha = val;
+        m_oStyleManager.m_oEdge.Alpha = val;
         return S_OK;
     }
     HRESULT CDocument::get_EdgeDist(double* val)
     {
-        *val = m_oEdge.Dist;
+        *val = m_oStyleManager.m_oEdge.Dist;
         return S_OK;
     }
     HRESULT CDocument::put_EdgeDist(double val)
     {
-        m_oEdge.Dist = val;
+        m_oStyleManager.m_oEdge.Dist = val;
         return S_OK;
     }
 
@@ -648,13 +708,13 @@ namespace NSDocxRenderer
     {
         std::shared_ptr<CImageInfo> pInfo = nullptr;
 
-        if ((nType > 0xFF) && (c_BrushTypeTexture == m_oBrush.Type))
+        if ((nType > 0xFF) && (c_BrushTypeTexture == m_oStyleManager.m_oBrush.Type))
         {
             double x = 0;
             double y = 0;
             double w = 0;
             double h = 0;
-            pInfo = m_oImageManager.WriteImage(m_oBrush.TexturePath, x, y, w, h);
+            pInfo = m_oImageManager.WriteImage(m_oStyleManager.m_oBrush.TexturePath, x, y, w, h);
         }
 
         m_oCurrentPage.DrawPath(nType, pInfo);
@@ -790,9 +850,9 @@ namespace NSDocxRenderer
             m_pFontManager = NSFontManager::CreateFontManager(m_pAppFonts);
         }
 
-        double dPix = m_oFont.CharSpace * m_dDpiX / 25.4;
+        double dPix = m_oStyleManager.m_oFont.CharSpace * m_dDpiX / 25.4;
 
-        if (m_oInstalledFont.IsEqual(&m_oFont))
+        if (m_oInstalledFont.IsEqual(&m_oStyleManager.m_oFont))
         {
             if (1 < m_dWidth)
             {
@@ -801,22 +861,22 @@ namespace NSDocxRenderer
             return;
         }
 
-        m_pFontManager->SetStringGID(m_oFont.StringGID);
+        m_pFontManager->SetStringGID(m_oStyleManager.m_oFont.StringGID);
         if (1 < m_dWidth)
         {
             m_pFontManager->SetCharSpacing(dPix);
         }
 
-        if (m_oFont.Path.empty())
+        if (m_oStyleManager.m_oFont.Path.empty())
         {
-            m_pFontManager->LoadFontByName(m_oFont.Name, (float)m_oFont.Size, m_oFont.GetStyle(), m_dDpiX, m_dDpiY);
+            m_pFontManager->LoadFontByName(m_oStyleManager.m_oFont.Name, (float)m_oStyleManager.m_oFont.Size, m_oStyleManager.m_oFont.GetStyle(), m_dDpiX, m_dDpiY);
         }
         else
         {
-            m_pFontManager->LoadFontFromFile(m_oFont.Path, m_oFont.FaceIndex, (float)m_oFont.Size, m_dDpiX, m_dDpiY);
+            m_pFontManager->LoadFontFromFile(m_oStyleManager.m_oFont.Path, m_oStyleManager.m_oFont.FaceIndex, (float)m_oStyleManager.m_oFont.Size, m_dDpiX, m_dDpiY);
         }
 
-        m_oInstalledFont = m_oFont;
+        m_oInstalledFont = m_oStyleManager.m_oFont;
     }
 
     bool CDocument::CreateDocument()
@@ -826,16 +886,16 @@ namespace NSDocxRenderer
         // Init
         Clear();
 
+        m_oStyleManager.Init(&m_oTransform);
+
         m_lCurrentCommandType = 0;
-        m_oCurrentPage.Init(&m_oFont, &m_oPen, &m_oBrush, &m_oShadow, &m_oEdge, &m_oTransform, &m_oSimpleGraphicsConverter, &m_oStyleManager);
+        m_oCurrentPage.Init(&m_oTransform, &m_oStyleManager);
 
         m_oImageManager.NewDocument();
-        m_oStyleManager.NewDocument();
+
         // media
         m_oImageManager.m_strDstMedia = m_strTempDirectory + L"/word/media";
         NSDirectory::CreateDirectory(m_oImageManager.m_strDstMedia);
-
-        m_oCurrentPage.m_oFontManager.Init();
 
         m_oDocumentStream.CloseFile();
         m_oDocumentStream.CreateFileW(m_strTempDirectory + L"/word/document.xml");
@@ -953,7 +1013,7 @@ namespace NSDocxRenderer
                 xmlns:w16se=\"http://schemas.microsoft.com/office/word/2015/wordml/symex\" \
                 mc:Ignorable=\"w14 w15 w16se w16cid w16 w16cex w16sdtdh\">");
 
-        CFontTable* pFontTable = &m_oCurrentPage.m_oFontManager.m_oFontTable;
+        CFontTable* pFontTable = &(*m_oCurrentPage.m_pStyleManager).m_oFontManager.m_oFontTable;
         for (std::map<std::wstring, CFontTableEntry>::iterator iterFont = pFontTable->m_mapTable.begin(); iterFont != pFontTable->m_mapTable.end(); iterFont++)
         {
             CFontTableEntry& oEntry = iterFont->second;
@@ -1198,9 +1258,9 @@ namespace NSDocxRenderer
         oWriter.WriteString(L"<w:uiPriority w:val=\"99\"/>");
         oWriter.WriteString(L"</w:style>");
 
-        for (const auto &pStyle : m_oStyleManager.m_mapStyles)
+        for (const auto &pStyle : m_oStyleManager.m_arStyles)
         {
-            pStyle.second->ToXml(oWriter);
+            pStyle->ToXml(oWriter);
         }
 
         oWriter.WriteString(L"</w:styles>");

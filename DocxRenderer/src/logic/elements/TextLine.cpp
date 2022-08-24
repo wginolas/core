@@ -19,6 +19,37 @@ namespace NSDocxRenderer
         Clear();
     }
 
+    CTextLine::CTextLine(const CTextLine& oSrc) : CBaseItem(ElemType::etTextLine), m_arConts()
+    {
+        *this = oSrc;
+    }
+
+    CTextLine& CTextLine::operator=(const CTextLine& oSrc)
+    {
+        if (this == &oSrc)
+        {
+            return *this;
+        }
+
+        Clear();
+
+        CBaseItem::operator=(oSrc);
+
+        for (auto pCont : oSrc.m_arConts)
+        {
+            m_arConts.push_back(new CContText(*pCont));
+        }
+
+        m_eAlignmentType  = oSrc.m_eAlignmentType;
+        m_eVertAlignType  = oSrc.m_eVertAlignType;
+
+        m_pDominantShape  = oSrc.m_pDominantShape;
+
+        m_iNumDuplicates = oSrc.m_iNumDuplicates;
+
+        return *this;
+    }
+
     void CTextLine::AddCont(CContText *pCont)
     {
         m_dBaselinePos = std::max(m_dBaselinePos, pCont->m_dBaselinePos);

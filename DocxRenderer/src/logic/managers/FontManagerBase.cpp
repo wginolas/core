@@ -514,8 +514,16 @@ namespace NSFontManager
     {
         if (m_oFont.m_oFont.Path.empty() || oText.empty())
         {
-            m_strCurrentPickFont = m_oFont.m_strFamilyName;
-            m_lCurrentPictFontStyle = m_oFont.m_lStyle;
+            if (m_strCurrentPickFont != m_oFont.m_strFamilyName)
+            {
+                m_strCurrentPickFont = m_oFont.m_strFamilyName;
+                m_bCurrentPickFontWasChanged = true;
+            }
+            if (m_lCurrentPictFontStyle != m_oFont.m_lStyle)
+            {
+                m_lCurrentPictFontStyle = m_oFont.m_lStyle;
+                m_bCurrentPictFontStyleWasChanged = true;
+            }
             return false;
         }
 
@@ -535,8 +543,16 @@ namespace NSFontManager
                 // нашли! ничего подбирать не нужно
                 // нужно просто выкинуть этот шрифт наверх
                 m_arListPicUps.splice(m_arListPicUps.begin(), m_arListPicUps, posOld);
-                m_strCurrentPickFont = oPick.m_strPickFont;
-                m_lCurrentPictFontStyle = oPick.m_lPickStyle;
+                if (m_strCurrentPickFont != oPick.m_strPickFont)
+                {
+                    m_strCurrentPickFont = oPick.m_strPickFont;
+                    m_bCurrentPickFontWasChanged = true;
+                }
+                if (m_lCurrentPictFontStyle != oPick.m_lPickStyle)
+                {
+                    m_lCurrentPictFontStyle = oPick.m_lPickStyle;
+                    m_bCurrentPictFontStyleWasChanged = true;
+                }
                 return false;
             }
         }
@@ -625,8 +641,16 @@ namespace NSFontManager
         if (pInfo->m_bItalic)
             oPick.m_lPickStyle |= 0x02;
 
-        m_strCurrentPickFont = oPick.m_strPickFont;
-        m_lCurrentPictFontStyle = oPick.m_lPickStyle;
+        if (m_strCurrentPickFont != oPick.m_strPickFont)
+        {
+            m_strCurrentPickFont = oPick.m_strPickFont;
+            m_bCurrentPickFontWasChanged = true;
+        }
+        if (m_lCurrentPictFontStyle != oPick.m_lPickStyle)
+        {
+            m_lCurrentPictFontStyle = oPick.m_lPickStyle;
+            m_bCurrentPictFontStyleWasChanged = true;
+        }
 
         m_arListPicUps.push_front(oPick);
         return true;

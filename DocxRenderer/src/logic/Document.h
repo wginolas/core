@@ -12,11 +12,11 @@ namespace NSDocxRenderer
 	public:
         NSFonts::IApplicationFonts* m_pAppFonts;
 
-		NSStructures::CPen				m_oPen;
-		NSStructures::CBrush			m_oBrush;
-		NSStructures::CFont				m_oFont;
-		NSStructures::CShadow			m_oShadow;
-		NSStructures::CEdgeText			m_oEdge;
+        /*NSStructures::CPen				m_oPen;
+        NSStructures::CBrush			m_oBrush;
+        NSStructures::CFont				m_oFont;
+        NSStructures::CShadow			m_oShadow;
+        NSStructures::CEdgeText			m_oEdge;*/
 
 		NSStructures::CFont				m_oInstalledFont;
 

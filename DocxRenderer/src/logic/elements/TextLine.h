@@ -30,6 +30,9 @@ namespace NSDocxRenderer
 
             ~CTextLine();
 
+            CTextLine(const CTextLine& oSrc);
+            CTextLine& operator=(const CTextLine& oSrc);
+
             void AddCont(CContText *pCont);
             bool IsBigger(const CBaseItem* oSrc) override final;
             bool IsBiggerOrEqual(const CBaseItem* oSrc) override final;
