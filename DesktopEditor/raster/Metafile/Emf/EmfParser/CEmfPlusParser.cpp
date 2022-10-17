@@ -507,7 +507,6 @@ namespace MetaFile
 		}
 		case BrushTypeTextureFill:
 		{
-			// TODO: так как на данный момент нельзя регулировать повторение заливки, то будет отрисовывать изображение при самой заливки
 			pEmfPlusBrush->Style = BS_PATTERN;
 
 			unsigned int unBrushDataFlags, unSkip = 16;
@@ -1302,9 +1301,12 @@ namespace MetaFile
 
 		oEmfPlusImage.GetData(pBytes, unImageSize);
 
-		NSFile::CFileBinary oFile;
+		std::wstring wsTempPath = GetTempFilename();
 
-		std::wstring wsTempPath = oFile.GetTempPath() + L"/Temp" + std::to_wstring(unImageSize) + L".tmp";
+		if (wsTempPath.empty())
+			return false;
+
+		NSFile::CFileBinary oFile;
 
 		if (!oFile.CreateFileW(wsTempPath))
 			return false;
