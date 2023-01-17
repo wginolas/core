@@ -3259,8 +3259,11 @@ namespace PdfReader
 
 		if (NSGraphics::IGraphicsRenderer* GRenderer = dynamic_cast<NSGraphics::IGraphicsRenderer*>(m_pRenderer))
 		{
-		    GRenderer->put_BrushGradInfo(info);
-			m_pRenderer->DrawPath(c_nWindingFillMode);
+			GRenderer->put_BrushGradInfo(info);
+			if (pGState->getStrokeColorSpace()->getMode() == csPattern)
+				m_pRenderer->DrawPath(c_nStroke | 0x10);
+			else
+				m_pRenderer->DrawPath(c_nWindingFillMode);
 		}
 
 		m_pRenderer->EndCommand(c_nPathType);
