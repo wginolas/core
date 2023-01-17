@@ -242,7 +242,7 @@ int main()
 	nLength -= 4;
 
 	int nPagesCount = 0;
-	int nTestPage = 0;
+	int nTestPage = 1;
 	int nWidth = 100;
 	int nHeight = 100;
 

@@ -81,7 +81,7 @@ namespace NSCorrectFontName
         while (std::wstring::npos != (nPos = sName2.find(sStyle, nPos)))
         {
             size_t nOffset = 0;
-            if ((nPos > 0) && sName2.at(nPos - 1) == '-')
+            if ((nPos > 0) && (sName2.at(nPos - 1) == '-' || sName2.at(nPos - 1) == ','))
             {
                 --nPos;
                 ++nOffset;
@@ -118,7 +118,7 @@ namespace NSCorrectFontName
         bool bItalic = false;
 
         CheckFontNameStyle(sName, L"regular");
-        CheckFontNameStyle(sName, L"condensed");
+
         CheckFontNameStyle(sName, L"condensedlight");
         //CheckFontNameStyle(sName, L"light");
 
@@ -1346,7 +1346,31 @@ namespace PdfReader
 
                             // AvgWidth
                             oFontDescriptor.dictLookup("AvgWidth", &oDictItem);
-                            if (oDictItem.isInt()) oFontSelect.shAvgCharWidth = new SHORT(oDictItem.getInt());
+                            if (oDictItem.isInt())
+                            {
+                                oFontSelect.shAvgCharWidth = new SHORT(oDictItem.getInt());
+
+                                std::wstring sName2 = wsFontBaseName;
+                                NSStringExt::ToLower(sName2);
+
+                                if (sName2.find(L"ultracondensed") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 0.5;
+                                else if (sName2.find(L"extracondensed") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 0.625;
+                                else if (sName2.find(L"semicondensed") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 0.875;
+                                else if (sName2.find(L"condensed") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 0.75;
+
+                                if (sName2.find(L"ultraexpanded") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 2.0;
+                                else if (sName2.find(L"extraexpanded") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 1.5;
+                                else if (sName2.find(L"semiexpanded") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 1.125;
+                                else if (sName2.find(L"expanded") != std::wstring::npos)
+                                    *oFontSelect.shAvgCharWidth *= 1.25;
+                            }
                             oDictItem.free();
 
                             // MaxWidth
