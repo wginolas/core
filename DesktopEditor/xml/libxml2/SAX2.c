@@ -2849,6 +2849,7 @@ xmlSAXDefaultVersion(int version)
 int
 xmlSAXVersion(xmlSAXHandler *hdlr, int version)
 {
+    printf("XXX xmlSAXVersion\n");
     if (hdlr == NULL) return(-1);
     if (version == 2) {
 	hdlr->startElement = NULL;
@@ -2923,7 +2924,7 @@ void
 xmlDefaultSAXHandlerInit(void)
 {
 #ifdef LIBXML_SAX1_ENABLED
-    printf("XXX SAX 2 %d\\n", (size_t)&xmlDefaultSAXHandler);
+    printf("XXX SAX 2 %d\n", (size_t)&xmlDefaultSAXHandler);
     xmlSAXVersion((xmlSAXHandlerPtr) &xmlDefaultSAXHandler, 1);
 #endif /* LIBXML_SAX1_ENABLED */
 }
