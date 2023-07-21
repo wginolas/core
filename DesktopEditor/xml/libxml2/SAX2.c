@@ -2924,8 +2924,9 @@ void
 xmlDefaultSAXHandlerInit(void)
 {
 #ifdef LIBXML_SAX1_ENABLED
-    printf("XXX SAX 2 %d\n", (size_t)&xmlDefaultSAXHandler);
+    printf("XXX xmlDefaultSAXHandlerInit being %d\n", (size_t)&xmlDefaultSAXHandler);
     xmlSAXVersion((xmlSAXHandlerPtr) &xmlDefaultSAXHandler, 1);
+    printf("XXX xmlDefaultSAXHandlerInit end \n");
 #endif /* LIBXML_SAX1_ENABLED */
 }
 
