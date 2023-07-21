@@ -868,6 +868,7 @@ namespace NSFile
 
 	std::wstring CUtf8Converter::GetWStringFromUTF16(const CStringUtf16& data)
 	{
+		std::cout << "XXX GetWStringFromUTF16 " << std::endl;
 		if (0 == data.Length)
 			return L"";
 
@@ -883,7 +884,7 @@ namespace NSFile
 		int nCurrent = 0;
 		while (nCurrent < nCount)
 		{
-			std::cout << "XXX File " << (size_t)pShort;
+			std::cout << "XXX File " << (size_t)pShort << std::endl;
 			if (*pShort < 0xD800 || *pShort > 0xDBFF)
 			{
 				*pWCurrent = (wchar_t)(*pShort);
