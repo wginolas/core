@@ -868,7 +868,7 @@ namespace NSFile
 
 	std::wstring CUtf8Converter::GetWStringFromUTF16(const CStringUtf16& data)
 	{
-		std::cout << "XXX GetWStringFromUTF16 " << std::endl;
+		std::cout << "XXX GetWStringFromUTF16 start" << std::endl;
 		if (0 == data.Length)
 			return L"";
 
@@ -903,6 +903,7 @@ namespace NSFile
 		std::wstring sRet(pWChar, pWCurrent - pWChar);
 
 		RELEASEARRAYOBJECTS(pWChar);
+		std::cout << "XXX GetWStringFromUTF16 end" << std::endl;
 		return sRet;
 	}
 	std::wstring CUtf8Converter::GetWStringFromUTF16(const unsigned short* pUtf16, LONG lCount)
