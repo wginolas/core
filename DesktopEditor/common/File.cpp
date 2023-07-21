@@ -30,6 +30,7 @@
  *
  */
 
+#include <iostream>
 #include <fstream>
 #include <time.h>
 #include "errno.h"
@@ -882,6 +883,7 @@ namespace NSFile
 		int nCurrent = 0;
 		while (nCurrent < nCount)
 		{
+			std::cout << "XXX File " << (size_t)pShort;
 			if (*pShort < 0xD800 || *pShort > 0xDBFF)
 			{
 				*pWCurrent = (wchar_t)(*pShort);
