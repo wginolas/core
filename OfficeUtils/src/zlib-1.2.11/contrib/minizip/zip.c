@@ -852,6 +852,7 @@ extern zipFile ZEXPORT zipOpen3 (const void *pathname, int append, zipcharpc* gl
     zip64_internal* zi;
     int err=ZIP_OK;
 
+    printf("XXX zipOpen3 begin/n");
     ziinit.z_filefunc.zseek32_file = NULL;
     ziinit.z_filefunc.ztell32_file = NULL;
     if (pzlib_filefunc64_32_def==NULL)
@@ -859,6 +860,7 @@ extern zipFile ZEXPORT zipOpen3 (const void *pathname, int append, zipcharpc* gl
     else
         ziinit.z_filefunc = *pzlib_filefunc64_32_def;
 
+    printf("XXX zipOpen3 1/n");
     ziinit.filestream = ZOPEN64(ziinit.z_filefunc,
                   pathname,
                   (append == APPEND_STATUS_CREATE) ?
@@ -880,7 +882,9 @@ extern zipFile ZEXPORT zipOpen3 (const void *pathname, int append, zipcharpc* gl
 
 
 
+    printf("XXX zipOpen3 2/n");
     zi = (zip64_internal*)ALLOC(sizeof(zip64_internal));
+    printf("XXX zipOpen3 3/n");
     if (zi==NULL)
     {
         ZCLOSE64(ziinit.z_filefunc,ziinit.filestream);
@@ -913,6 +917,7 @@ extern zipFile ZEXPORT zipOpen3 (const void *pathname, int append, zipcharpc* gl
     else
     {
         *zi = ziinit;
+        printf("XXX zipOpen3 success/n");
         return (zipFile)zi;
     }
 }
