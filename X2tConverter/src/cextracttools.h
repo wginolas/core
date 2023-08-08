@@ -916,6 +916,7 @@ namespace NExtractTools
                     }
                 }
                 eRes = processDownloadFile();
+                std::cout << "getConversionDirection 4 " << eRes << std::endl;
                 if(TCD_AUTO != eRes)
                     return eRes;
 
