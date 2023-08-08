@@ -889,6 +889,7 @@ namespace NExtractTools
 			{
                 std::cout << "getConversionDirection 1" << std::endl;
 				eRes = getConversionDirectionFromExt (*m_sFileFrom, *m_sFileTo);
+                std::cout << "getConversionDirection 1a " << eRes << std::endl;
 				if (TCD_ERROR != eRes)
 					return eRes;
 				COfficeFileFormatChecker FileFormatChecker;
@@ -896,7 +897,7 @@ namespace NExtractTools
 				m_nFormatFrom = new int(FileFormatChecker.GetFormatByExtension(L"." + NSFile::GetFileExtention(*m_sFileFrom)));
 				RELEASEOBJECT(m_nFormatTo);
 				m_nFormatTo = new int(FileFormatChecker.GetFormatByExtension(L"." + NSFile::GetFileExtention(*m_sFileTo)));
-                std::cout << "getConversionDirection 1a " << *m_nFormatFrom << " " << *m_nFormatTo << std::endl;
+                std::cout << "getConversionDirection 1b " << *m_nFormatFrom << " " << *m_nFormatTo << std::endl;
 			}
 
             std::cout << "getConversionDirection 2" << std::endl;
