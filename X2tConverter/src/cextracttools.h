@@ -883,9 +883,11 @@ namespace NExtractTools
 		}
 		TConversionDirection getConversionDirection()
 		{
+            std::cout << "getConversionDirection begin" << std::endl;
 			TConversionDirection eRes = TCD_AUTO;
 			if((NULL == m_nFormatFrom || AVS_OFFICESTUDIO_FILE_UNKNOWN == *m_nFormatFrom) && NULL == m_nFormatTo && NULL != m_sFileFrom && NULL != m_sFileTo)
 			{
+                std::cout << "getConversionDirection 1" << std::endl;
 				eRes = getConversionDirectionFromExt (*m_sFileFrom, *m_sFileTo);
 				if (TCD_ERROR != eRes)
 					return eRes;
@@ -896,6 +898,7 @@ namespace NExtractTools
 				m_nFormatTo = new int(FileFormatChecker.GetFormatByExtension(L"." + NSFile::GetFileExtention(*m_sFileTo)));
 			}
 
+            std::cout << "getConversionDirection 2" << std::endl;
 			if(NULL != m_nFormatFrom && NULL != m_nFormatTo)
 			{
 				int nFormatFrom	= *m_nFormatFrom;
@@ -915,6 +918,8 @@ namespace NExtractTools
                 eRes = processDownloadFile();
                 if(TCD_AUTO != eRes)
                     return eRes;
+
+                std::cout << "getConversionDirection 3" << std::endl;
 
                 if(NULL != m_oMailMergeSend)
                     eRes = TCD_MAILMERGE;
