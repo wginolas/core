@@ -959,10 +959,12 @@ namespace NExtractTools
 		}
 		TConversionDirection processDownloadFile()
         {
+            std::cout << "processDownloadFile start" << std::endl;
             TConversionDirection eRes = TCD_AUTO;
             int nFormatFrom	= *m_nFormatFrom;
 			if(AVS_OFFICESTUDIO_FILE_DOCUMENT_TXT == nFormatFrom && NULL == m_nCsvTxtEncoding)
             {
+                std::cout << "processDownloadFile 1" << std::endl;
                 int nCodePage = getEncodingByContent();
                 if(nCodePage < 0)
                 {
@@ -979,6 +981,7 @@ namespace NExtractTools
             }
 			else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_CSV == nFormatFrom && (NULL == m_nCsvTxtEncoding || (NULL == m_nCsvDelimiter && NULL == m_sCsvDelimiterChar)))
             {
+                std::cout << "processDownloadFile 2" << std::endl;
                 if(isEmptyFile())
                 {
                     m_nCsvTxtEncoding = new int(getEncodingByContent());
