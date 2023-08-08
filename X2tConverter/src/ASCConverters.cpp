@@ -735,6 +735,7 @@ namespace NExtractTools
     // xslx -> bin
     _UINT32 xlsx2xlst_bin (const std::wstring &sFrom, const std::wstring &sTo, const std::wstring &sTemp, InputParams& params)
     {
+        std::cout << "xlsx2xlst_bin start" << std::endl;
         // Extract xlsx to temp directory
         std::wstring sTempUnpackedXLSX = sTemp + FILE_SEPARATOR_STR + _T("xlsx_unpacked");
 
@@ -743,10 +744,12 @@ namespace NExtractTools
         COfficeUtils oCOfficeUtils(NULL);
         if (S_OK != oCOfficeUtils.ExtractToDirectory(sFrom, sTempUnpackedXLSX, NULL, 0))
 		{
-			//check crypt 
+            std::cout << "xlsx2xlst_bin 1" << std::endl;
+			//check crypt
 			COfficeFileFormatChecker OfficeFileFormatChecker;
 			if (OfficeFileFormatChecker.isOfficeFile(sFrom))
 			{
+                std::cout << "xlsx2xlst_bin 2" << std::endl;
 				if (OfficeFileFormatChecker.nFileType == AVS_OFFICESTUDIO_FILE_OTHER_MS_OFFCRYPTO)
 				{
 					// test protect
@@ -773,6 +776,7 @@ namespace NExtractTools
 					return mitcrypt2oot_bin(sFrom, sTo, sTemp, params);
 				else
 				{
+                    std::cout << "xlsx2xlst_bin 3" << std::endl;
 					if (create_if_empty(sFrom, sTo, L"XLSY;v10;0;"))
 						return 0;
 					return AVS_FILEUTILS_ERROR_CONVERT;
@@ -781,6 +785,7 @@ namespace NExtractTools
 			else return AVS_FILEUTILS_ERROR_CONVERT;		
 		}
 
+        std::cout << "xlsx2xlst_bin 4" << std::endl;
 		return xlsx_dir2xlst_bin(sTempUnpackedXLSX, sTo, params, true, sFrom);
     }
 	// xlsxflat -> bin
