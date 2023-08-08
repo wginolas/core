@@ -981,14 +981,16 @@ namespace NExtractTools
             }
 			else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_CSV == nFormatFrom && (NULL == m_nCsvTxtEncoding || (NULL == m_nCsvDelimiter && NULL == m_sCsvDelimiterChar)))
             {
-                std::cout << "processDownloadFile 2" << std::endl;
+                std::cout << "processDownloadFile 2 " << m_nCsvTxtEncoding << " " << m_nCsvDelimiter << " " << m_sCsvDelimiterChar << std::endl;
                 if(isEmptyFile())
                 {
+                    std::cout << "processDownloadFile 3" << std::endl;
                     m_nCsvTxtEncoding = new int(getEncodingByContent());
                     m_sCsvDelimiterChar = new std::wstring(L",");
                 }
                 else
                 {
+                    std::cout << "processDownloadFile 4" << std::endl;
                     if(!getDontSaveAdditional())
                     {
                         int nCodePage = getEncodingByContent();
