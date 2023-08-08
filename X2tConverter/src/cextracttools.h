@@ -896,6 +896,7 @@ namespace NExtractTools
 				m_nFormatFrom = new int(FileFormatChecker.GetFormatByExtension(L"." + NSFile::GetFileExtention(*m_sFileFrom)));
 				RELEASEOBJECT(m_nFormatTo);
 				m_nFormatTo = new int(FileFormatChecker.GetFormatByExtension(L"." + NSFile::GetFileExtention(*m_sFileTo)));
+                std::cout << "getConversionDirection 1a " << *m_nFormatFrom << " " << *m_nFormatTo << std::endl;
 			}
 
             std::cout << "getConversionDirection 2" << std::endl;
