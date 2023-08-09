@@ -889,7 +889,7 @@ namespace NExtractTools
 			{
                 std::cout << "getConversionDirection 1" << std::endl;
 				eRes = getConversionDirectionFromExt (*m_sFileFrom, *m_sFileTo);
-                std::cout << "getConversionDirection 1a " << eRes << std::endl;
+                std::cout << "getConversionDirection 1a " << eRes << " " << TCD_CSV2XLST_BIN << std::endl;
 				if (TCD_ERROR != eRes)
 					return eRes;
 				COfficeFileFormatChecker FileFormatChecker;
