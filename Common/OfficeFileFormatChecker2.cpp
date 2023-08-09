@@ -532,34 +532,42 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
         std::cout << "isOfficeFile 10 " << sizeRead << std::endl;
 		if (isOOXFlatFormatFile(buffer, sizeRead))
 		{
+            std::cout << "isOfficeFile 11" << std::endl;
 			//nFileType;
 		}
 		else if ( isRtfFormatFile(buffer,sizeRead) ) // min size - 5
 		{
+            std::cout << "isOfficeFile 12" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_DOCUMENT_RTF;
 		}
 		else if ( isBinaryDoctFormatFile(buffer,sizeRead) ) // min size - 4
 		{
+            std::cout << "isOfficeFile 13" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_CANVAS_WORD;
 		}
 		else if ( isBinaryXlstFormatFile(buffer,sizeRead) )// min size - 4
 		{
+            std::cout << "isOfficeFile 14" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_CANVAS_SPREADSHEET;
 		}
 		else if ( isBinaryPpttFormatFile(buffer,sizeRead) )// min size - 4
 		{
+            std::cout << "isOfficeFile 15" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_CANVAS_PRESENTATION;
 		}        
         else if (isPdfFormatFile(buffer,sizeRead, sDocumentID) )// min size - 5
         {
+            std::cout << "isOfficeFile 16" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_CROSSPLATFORM_PDF;
         }
         else if (isDjvuFormatFile(buffer,sizeRead) )// min size - 8
         {
+            std::cout << "isOfficeFile 17" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_CROSSPLATFORM_DJVU;
         }
 		else if (isHtmlFormatFile(buffer,sizeRead, false))// min size - 4
         {
+            std::cout << "isOfficeFile 18" << std::endl;
 			long fileSize = file.GetFileSize();
 			if (fileSize > MIN_SIZE_BUFFER)		
 			{
@@ -574,27 +582,33 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
         }
         else if (isFB2FormatFile(buffer,sizeRead) )// min size - 11
         {
+            std::cout << "isOfficeFile 18" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_DOCUMENT_FB2;
         }
 		else if (isOpenOfficeFlatFormatFile(buffer,sizeRead) )// min size - 78
 		{
+            std::cout << "isOfficeFile 19" << std::endl;
 			//nFileType
 		}
 		else if (isDocFlatFormatFile(buffer,sizeRead) )// min size - 2
 		{
+            std::cout << "isOfficeFile 20" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_DOCUMENT_DOC_FLAT; // without compaund container
 		}
 		else if (isXlsFlatFormatFile(buffer, sizeRead))// min size - 2
 		{
+            std::cout << "isOfficeFile 21" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLS; // without compaund container
 		}
 		else if (isMultiPartsHtmlFormatFile(buffer, sizeRead))
 		{
+            std::cout << "isOfficeFile 22" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_DOCUMENT_MHT;
 		}
 //------------------------------------------------------------------------------------------------
 		file.CloseFile();
 
+        std::cout << "isOfficeFile 23" << std::endl;
 		if (buffer)delete []buffer;
 		buffer = NULL;
 	}
@@ -612,6 +626,7 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 	
 	if (nFileType != AVS_OFFICESTUDIO_FILE_UNKNOWN) return true;
 	
+    std::cout << "isOfficeFile 24" << std::endl;
 	if (bEmptyFile)
 	{
 		if (0 == sExt.compare(L".xlsx"))
@@ -640,6 +655,8 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 		nFileType = AVS_OFFICESTUDIO_FILE_TEAMLAB_DOCY;
     else //if (0 == sExt.compare(L".txt") || 0 == sExt.compare(L".xml")) //volsciv.rtf -или любой другой
         nFileType = AVS_OFFICESTUDIO_FILE_DOCUMENT_TXT;
+
+    std::cout << "isOfficeFile 25 " << nFileType << std::endl;
 
 	if (nFileType != AVS_OFFICESTUDIO_FILE_UNKNOWN) return true;
 
