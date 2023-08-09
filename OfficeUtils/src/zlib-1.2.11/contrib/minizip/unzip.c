@@ -712,56 +712,78 @@ local unzFile unzOpenInternal (const void *path,
     else
     {
         central_pos = unz64local_SearchCentralDir(&us.z_filefunc,us.filestream);
-        if (central_pos==0)
+        if (central_pos==0) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e13\n");
+        }
 
         us.isZip64 = 0;
 
         if (ZSEEK64(us.z_filefunc, us.filestream,
-                                        central_pos,ZLIB_FILEFUNC_SEEK_SET)!=0)
+                    central_pos,ZLIB_FILEFUNC_SEEK_SET)!=0) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e14\n");
+        }
 
         /* the signature, already checked */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e15\n");
+        }
 
         /* number of this disk */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&number_disk)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&number_disk)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e16\n");
+        }
 
         /* number of the disk with the start of the central directory */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&number_disk_with_CD)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&number_disk_with_CD)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e17\n");
+        }
 
         /* total number of entries in the central dir on this disk */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e18\n");
+        }
         us.gi.number_entry = uL;
 
         /* total number of entries in the central dir */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e19\n");
+        }
         number_entry_CD = uL;
 
         if ((number_entry_CD!=us.gi.number_entry) ||
             (number_disk_with_CD!=0) ||
-            (number_disk!=0))
+            (number_disk!=0)) {
             err=UNZ_BADZIPFILE;
+            printf("unzOpenInternal e20\n");
+        }
 
         /* size of the central directory */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e21\n");
+        }
         us.size_central_dir = uL;
 
         /* offset of start of central directory with respect to the
             starting disk number */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e22\n");
+        }
         us.offset_central_dir = uL;
 
         /* zipfile comment length */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&us.gi.size_comment)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&us.gi.size_comment)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e23\n");
+        }
     }
 
     if ((central_pos<us.offset_central_dir+us.size_central_dir) &&
