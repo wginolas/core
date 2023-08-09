@@ -450,13 +450,16 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 	POLE::Storage storage(fileName.c_str());
     if (storage.open())
     {
+        std::cout << "isOfficeFile 1" << std::endl;
         if ( isDocFormatFile(&storage) )
         {
 			//nFileType внутри
+            std::cout << "isOfficeFile 2" << std::endl;
 			return true;
         }
         else if ( isXlsFormatFile(&storage) )
         {
+            std::cout << "isOfficeFile 3" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLS;
             return true;
         }
@@ -473,21 +476,25 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 //			}         
 //			pptFile.CloseFile();
 //#endif
+            std::cout << "isOfficeFile 4" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_PRESENTATION_PPT;
             return true;
         }
         else if ( isMS_OFFICECRYPTOFormatFile(&storage, sDocumentID) )
         {
+            std::cout << "isOfficeFile 5" << std::endl;
             nFileType = AVS_OFFICESTUDIO_FILE_OTHER_MS_OFFCRYPTO;
             return true;
         }
 		else if (isMS_MITCRYPTOFormatFile(&storage, sDocumentID))
 		{
+            std::cout << "isOfficeFile 6" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_OTHER_MS_MITCRYPTO;
 			return true;
 		}
 		else if (isVbaProjectFile(&storage))
 		{
+            std::cout << "isOfficeFile 7" << std::endl;
 			nFileType = AVS_OFFICESTUDIO_FILE_OTHER_MS_VBAPROJECT;
 			return true;
 		}
@@ -496,6 +503,7 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
     COfficeUtils OfficeUtils(NULL);
     if (OfficeUtils.IsArchive(fileName) == S_OK)
 	{
+        std::cout << "isOfficeFile 8" << std::endl;
              if ( isOOXFormatFile(fileName) )						return true;
         else if ( isOpenOfficeFormatFile(fileName, sDocumentID) )	return true;
         else if ( isOnlyOfficeFormatFile(fileName) )				return true;
@@ -507,6 +515,7 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 
 	bool bEmptyFile = false;
     {
+        std::cout << "isOfficeFile 9" << std::endl;
 		NSFile::CFileBinary file;
         if (!file.OpenFile(fileName))
             return false;
@@ -520,6 +529,7 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 
 		bEmptyFile = (dwReadBytes < 1);
 
+        std::cout << "isOfficeFile 10 " << sizeRead << std::endl;
 		if (isOOXFlatFormatFile(buffer, sizeRead))
 		{
 			//nFileType;
