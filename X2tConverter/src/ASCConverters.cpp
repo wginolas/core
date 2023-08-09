@@ -5224,6 +5224,7 @@ namespace NExtractTools
 	}
 	_UINT32 fromInputParams(InputParams& oInputParams)
 	{
+        std::cout << "fromInputParams start" << std::endl;
 		TConversionDirection conversion  = oInputParams.getConversionDirection();
 		std::wstring sFileFrom	= *oInputParams.m_sFileFrom;
 		std::wstring sFileTo	= *oInputParams.m_sFileTo;
@@ -5287,6 +5288,7 @@ namespace NExtractTools
 		NSDoctRenderer::CDocBuilder::Initialize();
 
 		_UINT32 result = 0;
+        std::cout << "fromInputParams 1 " << conversion << std::endl;
 		switch(conversion)
 		{
 			case TCD_DOCX2DOCT:
