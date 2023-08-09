@@ -41,6 +41,8 @@
 #include "3dParty/pole/pole.h"
 #include <algorithm>
 
+#include <iostream>
+
 #define MIN_SIZE_BUFFER 4096
 #define MAX_SIZE_BUFFER 102400
 
@@ -439,6 +441,7 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 #else
     std::wstring fileName = _fileName;
 #endif
+    std::cout << "isOfficeFile start " << fileName << std::endl;
 
     //приоритет как оказывается важен
     //Metamorphic Manual for windows 28415.doc
