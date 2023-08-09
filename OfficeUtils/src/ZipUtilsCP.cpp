@@ -43,6 +43,8 @@
 #define WRITEBUFFERSIZE 8192
 #define READBUFFERSIZE 8192
 
+#include <iostream>
+
 namespace ZLibZipUtils
 {
 #ifndef _IOS
@@ -882,6 +884,10 @@ int ZipDir( const WCHAR* dir, const WCHAR* outputFile, const OnProgressCallback*
 	  unzFile uf = NULL;
 	  bool isZIP = false;
 
+    std::cout << "ZipUtilsCP::IsArchive start ";
+    std::wcout << filename;
+    std::cout << std::endl;
+
 	  if (( filename != NULL ))
 		  uf = unzOpenHelp( filename );
 
@@ -891,6 +897,7 @@ int ZipDir( const WCHAR* dir, const WCHAR* outputFile, const OnProgressCallback*
 		  unzClose( uf );
 	  }
 
+    std::cout << "ZipUtilsCP::IsArchive end " << isZIP << std::endl;
 	  return isZIP;
 	}
 

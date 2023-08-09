@@ -34,6 +34,8 @@
 #include "../../DesktopEditor/common/File.h"
 #include "../../DesktopEditor/common/Directory.h"
 
+#include <iostream>
+
 COfficeUtils::COfficeUtils(OnProgressCallback* fCallback)
 {
 	m_fCallback = fCallback;
@@ -128,12 +130,18 @@ HRESULT COfficeUtils::IsArchive(const std::wstring& _filename)
     std::wstring filename = _filename;
 #endif
 
+  std::cout << "COfficeUtils::IsArchive start ";
+  std::wcout << filename;
+  std::cout << std::endl;
+
   if( ZLibZipUtils::IsArchive(filename.c_str()) )
   {
+    std::cout << "COfficeUtils::IsArchive OK";
     return S_OK;
   }
   else
   {
+    std::cout << "COfficeUtils::IsArchive FALSE";
     return S_FALSE;
   }
 }
