@@ -585,6 +585,7 @@ local unzFile unzOpenInternal (const void *path,
                                zlib_filefunc64_32_def* pzlib_filefunc64_32_def,
                                int is64bitOpenFunction)
 {
+    printf("unzOpenInternal start/n");
     unz64_s us;
     unz64_s *s;
     ZPOS64_T central_pos;
@@ -603,6 +604,7 @@ local unzFile unzOpenInternal (const void *path,
     if (unz_copyright[0]!=' ')
         return NULL;
 
+    printf("unzOpenInternal 1/n");
     us.z_filefunc.zseek32_file = NULL;
     us.z_filefunc.ztell32_file = NULL;
     if (pzlib_filefunc64_32_def==NULL)
@@ -618,8 +620,10 @@ local unzFile unzOpenInternal (const void *path,
     us.filestream = ZOPEN64(us.z_filefunc,
                                                  path,
                                                  nMode);
+    printf("unzOpenInternal 2/n");
     if (us.filestream==NULL)
         return NULL;
+    printf("unzOpenInternal 3/n");
 
     central_pos = unz64local_SearchCentralDir64(&us.z_filefunc,us.filestream);
     if (central_pos)
@@ -740,6 +744,7 @@ local unzFile unzOpenInternal (const void *path,
         (err==UNZ_OK))
         err=UNZ_BADZIPFILE;
 
+    printf("unzOpenInternal 4 %d/n", err);
     if (err!=UNZ_OK)
     {
         ZCLOSE64(us.z_filefunc, us.filestream);

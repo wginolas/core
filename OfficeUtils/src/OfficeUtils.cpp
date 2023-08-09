@@ -136,12 +136,12 @@ HRESULT COfficeUtils::IsArchive(const std::wstring& _filename)
 
   if( ZLibZipUtils::IsArchive(filename.c_str()) )
   {
-    std::cout << "COfficeUtils::IsArchive OK";
+    std::cout << "COfficeUtils::IsArchive OK" << std::endl;
     return S_OK;
   }
   else
   {
-    std::cout << "COfficeUtils::IsArchive FALSE";
+    std::cout << "COfficeUtils::IsArchive FALSE" << std::endl;
     return S_FALSE;
   }
 }

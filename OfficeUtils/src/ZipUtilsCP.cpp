@@ -64,7 +64,8 @@ namespace ZLibZipUtils
 	  return zf;
   }
   unzFile unzOpenHelp(const wchar_t* filename)
-  {   
+  {
+    std::cout << "unzOpenHelp start" << std::endl;
 #if defined(_WIN32) || defined (_WIN64)
 	  zlib_filefunc64_def ffunc;
 	  fill_win32_filefunc64W(&ffunc);
@@ -76,6 +77,7 @@ namespace ZLibZipUtils
 	  unzFile uf = unzOpen( (char*)pUtf8 );
 	  delete [] pUtf8;
 #endif
+    std::cout << "unzOpenHelp end" << uf << std::endl;
 	  return uf;
   }
 #endif
