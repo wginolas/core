@@ -441,7 +441,9 @@ bool COfficeFileFormatChecker::isOfficeFile(const std::wstring & _fileName)
 #else
     std::wstring fileName = _fileName;
 #endif
-    std::cout << "isOfficeFile start " << fileName << std::endl;
+    std::cout << "isOfficeFile start ";
+    std::wcout << fileName;
+    std::cout << std::endl;
 
     //приоритет как оказывается важен
     //Metamorphic Manual for windows 28415.doc
