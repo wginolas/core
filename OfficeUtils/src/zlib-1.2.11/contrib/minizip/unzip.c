@@ -585,7 +585,7 @@ local unzFile unzOpenInternal (const void *path,
                                zlib_filefunc64_32_def* pzlib_filefunc64_32_def,
                                int is64bitOpenFunction)
 {
-    printf("unzOpenInternal start/n");
+    printf("unzOpenInternal start\n");
     unz64_s us;
     unz64_s *s;
     ZPOS64_T central_pos;
@@ -604,7 +604,7 @@ local unzFile unzOpenInternal (const void *path,
     if (unz_copyright[0]!=' ')
         return NULL;
 
-    printf("unzOpenInternal 1/n");
+    printf("unzOpenInternal 1\n");
     us.z_filefunc.zseek32_file = NULL;
     us.z_filefunc.ztell32_file = NULL;
     if (pzlib_filefunc64_32_def==NULL)
@@ -620,10 +620,10 @@ local unzFile unzOpenInternal (const void *path,
     us.filestream = ZOPEN64(us.z_filefunc,
                                                  path,
                                                  nMode);
-    printf("unzOpenInternal 2/n");
+    printf("unzOpenInternal 2\n");
     if (us.filestream==NULL)
         return NULL;
-    printf("unzOpenInternal 3/n");
+    printf("unzOpenInternal 3\n");
 
     central_pos = unz64local_SearchCentralDir64(&us.z_filefunc,us.filestream);
     if (central_pos)
@@ -634,54 +634,78 @@ local unzFile unzOpenInternal (const void *path,
         us.isZip64 = 1;
 
         if (ZSEEK64(us.z_filefunc, us.filestream,
-                                      central_pos,ZLIB_FILEFUNC_SEEK_SET)!=0)
-        err=UNZ_ERRNO;
+                    central_pos,ZLIB_FILEFUNC_SEEK_SET)!=0) {
+            err=UNZ_ERRNO;
+            printf("unzOpenInternal e1\n");
+        }
 
         /* the signature, already checked */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&uL)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e2\n");
+        }
 
         /* size of zip64 end of central directory record */
-        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&uL64)!=UNZ_OK)
+        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&uL64)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e3\n");
+        }
 
         /* version made by */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uS)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uS)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e4\n");
+        }
 
         /* version needed to extract */
-        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uS)!=UNZ_OK)
+        if (unz64local_getShort(&us.z_filefunc, us.filestream,&uS)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e5\n");
+        }
 
         /* number of this disk */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&number_disk)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&number_disk)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e6\n");
+        }
 
         /* number of the disk with the start of the central directory */
-        if (unz64local_getLong(&us.z_filefunc, us.filestream,&number_disk_with_CD)!=UNZ_OK)
+        if (unz64local_getLong(&us.z_filefunc, us.filestream,&number_disk_with_CD)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e7\n");
+        }
 
         /* total number of entries in the central directory on this disk */
-        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.gi.number_entry)!=UNZ_OK)
+        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.gi.number_entry)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e8\n");
+        }
 
         /* total number of entries in the central directory */
-        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&number_entry_CD)!=UNZ_OK)
+        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&number_entry_CD)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e9\n");
+        }
 
         if ((number_entry_CD!=us.gi.number_entry) ||
             (number_disk_with_CD!=0) ||
-            (number_disk!=0))
+            (number_disk!=0)) {
             err=UNZ_BADZIPFILE;
+            printf("unzOpenInternal e10\n");
+        }
 
         /* size of the central directory */
-        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.size_central_dir)!=UNZ_OK)
+        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.size_central_dir)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e11\n");
+        }
 
         /* offset of start of central directory with respect to the
           starting disk number */
-        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.offset_central_dir)!=UNZ_OK)
+        if (unz64local_getLong64(&us.z_filefunc, us.filestream,&us.offset_central_dir)!=UNZ_OK) {
             err=UNZ_ERRNO;
+            printf("unzOpenInternal e12\n");
+        }
 
         us.gi.size_comment = 0;
     }
@@ -744,7 +768,7 @@ local unzFile unzOpenInternal (const void *path,
         (err==UNZ_OK))
         err=UNZ_BADZIPFILE;
 
-    printf("unzOpenInternal 4 %d/n", err);
+    printf("unzOpenInternal 4 %d\n", err);
     if (err!=UNZ_OK)
     {
         ZCLOSE64(us.z_filefunc, us.filestream);
