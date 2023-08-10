@@ -957,6 +957,7 @@ namespace NExtractTools
             }
 			else
 				eRes = TCD_ERROR;
+            std::cout << "getConversionDirection end " << eRes << std::endl;
 			return eRes;
 		}
 		TConversionDirection processDownloadFile()
