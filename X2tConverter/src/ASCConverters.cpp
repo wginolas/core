@@ -4509,6 +4509,7 @@ namespace NExtractTools
 		   else if (AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatFrom ||
 			   AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSB == nFormatFrom)
            {
+                std::cout << "fromSpreadsheet 4" << std::endl;
 				sXlsxFile = sFrom;
 				if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatFrom && params.getFromChanges())
 				{
@@ -4555,6 +4556,7 @@ namespace NExtractTools
            }
 		   else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSM == nFormatFrom)
 		   {
+               std::cout << "fromSpreadsheet 5" << std::endl;
 			   if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatTo || AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLTX == nFormatTo)
 			   {
 				   nRes = xlsm2xlsx_dir(sFrom, sXlsxDir, params);
@@ -4566,10 +4568,12 @@ namespace NExtractTools
 		   }
 		   else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLTX == nFormatFrom)
 		   {
+               std::cout << "fromSpreadsheet 6" << std::endl;
                nRes = xltx2xlsx_dir(sFrom, sXlsxDir, params);
 		   }
 		   else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLTM == nFormatFrom)
 		   {
+               std::cout << "fromSpreadsheet 7" << std::endl;
 			   if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatTo || AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLTX == nFormatTo)
 			   {
 				   nRes = xltm2xlsx_dir(sFrom, sXlsxDir, params);
@@ -4581,26 +4585,32 @@ namespace NExtractTools
 		   }
 		   else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLS == nFormatFrom)
            {
+               std::cout << "fromSpreadsheet 8" << std::endl;
                nRes = xls2xlsx_dir(sFrom, sXlsxDir, sTemp, params);
            }
 		   else if (AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX_FLAT == nFormatFrom)
 		   {
+               std::cout << "fromSpreadsheet 9" << std::endl;
 			   nRes = xlsxflat2xlsx_dir(sFrom, sXlsxDir, sTemp, params);
 		   }
            else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_ODS == nFormatFrom || AVS_OFFICESTUDIO_FILE_SPREADSHEET_OTS == nFormatFrom)
            {
+               std::cout << "fromSpreadsheet 10" << std::endl;
                nRes = odf2oox_dir(sFrom, sXlsxDir, sTemp, params);
            }
            else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_ODS_FLAT == nFormatFrom)
            {
+               std::cout << "fromSpreadsheet 11" << std::endl;
                nRes = odf_flat2oox_dir(sFrom, sXlsxDir, sTemp, params);
            }
            else if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX_PACKAGE == nFormatFrom)
            {
+               std::cout << "fromSpreadsheet 12" << std::endl;
                nRes = package2ooxml_dir(sFrom, sXlsxDir, sTemp, params);
            }
 		   else if (AVS_OFFICESTUDIO_FILE_SPREADSHEET_CSV == nFormatFrom)
 		   {
+               std::cout << "fromSpreadsheet 13" << std::endl;
 			   nRes = csv2xlsx_dir(sFrom, sXlsxDir, sTemp, params);	
 			   *params.m_nFormatFrom = AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX;
 		   }
@@ -4611,6 +4621,7 @@ namespace NExtractTools
 			   nRes = fromXlsxDir(sXlsxDir, sTo, nFormatTo, sTemp, sThemeDir, bPaid, params, sXlsxFile);
            }
        }
+       std::cout << "fromSpreadsheet end " << nRes << std::endl;
        return nRes;
    }
 
