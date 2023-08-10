@@ -4463,6 +4463,7 @@ namespace NExtractTools
    }
 	_UINT32 fromSpreadsheet(const std::wstring &sFrom, int nFormatFrom, const std::wstring &sTemp, InputParams& params)
    {
+        std::cout << "fromSpreadsheet start" << std::endl;
 		std::wstring sTo = *params.m_sFileTo;
 		int nFormatTo = AVS_OFFICESTUDIO_FILE_UNKNOWN;
 		if(NULL != params.m_nFormatTo)
@@ -4472,6 +4473,7 @@ namespace NExtractTools
 		{
 			return AVS_FILEUTILS_ERROR_CONVERT_PARAMS;
 		}
+        std::cout << "fromSpreadsheet 1" << std::endl;
 
 		std::wstring sFontPath;
 		if(NULL != params.m_sFontDir)
@@ -4489,6 +4491,7 @@ namespace NExtractTools
 			(AVS_OFFICESTUDIO_FILE_CANVAS_SPREADSHEET == nFormatTo ||
 			 AVS_OFFICESTUDIO_FILE_OTHER_JSON == nFormatTo))
 	   {
+           std::cout << "fromSpreadsheet 2" << std::endl;
 		   nRes = csv2xlst_bin(sFrom, sTo, params);
 	   }
        else 
@@ -4500,6 +4503,7 @@ namespace NExtractTools
 			   !((AVS_OFFICESTUDIO_FILE_CANVAS & nFormatTo) || (AVS_OFFICESTUDIO_FILE_IMAGE & nFormatTo) ||
 				   (AVS_OFFICESTUDIO_FILE_CROSSPLATFORM_PDF == nFormatTo)))
 		   {
+               std::cout << "fromSpreadsheet 3" << std::endl;
 			   nRes = xlsb2xlsx_dir(sFrom, sXlsxDir, sTemp, params);
 		   }
 		   else if (AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatFrom ||
