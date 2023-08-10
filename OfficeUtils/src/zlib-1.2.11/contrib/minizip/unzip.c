@@ -434,11 +434,12 @@ local ZPOS64_T unz64local_SearchCentralDir(const zlib_filefunc64_32_def* pzlib_f
     if (buf==NULL)
         return 0;
 
-    printf("unz64local_SearchCentralDir 2\n");
+    printf("unz64local_SearchCentralDir 2 %llu\n", uMaxBack);
 
     uBackRead = 4;
     while (uBackRead<uMaxBack)
     {
+        printf("unz64local_SearchCentralDir 2 %llu\n", uBackRead);
         uLong uReadSize;
         ZPOS64_T uReadPos ;
         int i;
