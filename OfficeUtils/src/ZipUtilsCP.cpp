@@ -790,6 +790,7 @@ int ZipDir( const WCHAR* dir, const WCHAR* outputFile, const OnProgressCallback*
 
   int UnzipToDir( const WCHAR* zipFile, const WCHAR* unzipDir, const OnProgressCallback* progress, const WCHAR* password, bool opt_extract_without_path, bool clearOutputDirectory )
   {
+    std::cout << "UnzipToDir start" << std::endl;
     unzFile uf = NULL;
 
     int err = -1;

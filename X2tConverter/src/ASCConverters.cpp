@@ -1430,7 +1430,9 @@ namespace NExtractTools
     // unzip dir
     _UINT32 zip2dir (const std::wstring &sFrom, const std::wstring &sTo)
     {
+        std::cout << "xip2dir start" << std::endl;
         COfficeUtils oCOfficeUtils(NULL);
+        std::cout << "xip2dir 1" << std::endl;
         return (S_OK == oCOfficeUtils.ExtractToDirectory(sFrom, sTo, NULL, 0)) ? 0 : AVS_FILEUTILS_ERROR_CONVERT;
     }
 
