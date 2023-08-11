@@ -122,6 +122,7 @@ static std::wstring utf8_to_unicode(const char *src)
 		NExtractTools::InputParams oInputParams;
 		if (oInputParams.FromXmlFile(sArg1) && (sArg2.empty() || oInputParams.FromXml(sArg2)))
 		{
+            std::cout << "fromInputParams 1" << std::endl;
 			result = NExtractTools::fromInputParams(oInputParams);
 		}
 		else
@@ -169,6 +170,7 @@ static std::wstring utf8_to_unicode(const char *src)
 				oInputParams.m_sPassword = new std::wstring(sArg4);
 				oInputParams.m_sSavePassword = new std::wstring(sArg4);
 			}
+            std::cout << "fromInputParams 1" << std::endl;
 			result = NExtractTools::fromInputParams(oInputParams);
 		}
 	}
