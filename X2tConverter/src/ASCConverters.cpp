@@ -4633,6 +4633,7 @@ namespace NExtractTools
            std::cout << "fromSpreadsheet 15 " << nRes << std::endl;
            if(SUCCEEDED_X2T(nRes))
            {
+               std::cout << "fromSpreadsheet 16 " << nRes << std::endl;
 			   nRes = fromXlsxDir(sXlsxDir, sTo, nFormatTo, sTemp, sThemeDir, bPaid, params, sXlsxFile);
            }
        }
@@ -5786,6 +5787,7 @@ namespace NExtractTools
 				result = AVS_FILEUTILS_ERROR_CONVERT_PARAMS;
 			}break;
 		}
+        std::cout << "fromInputParams 2 " << result << std::endl;
 
 		// delete temp dir
 		if (!bExternalTempDir)
@@ -5797,10 +5799,12 @@ namespace NExtractTools
 		NSDoctRenderer::CDocBuilder::Dispose();
 		if (SUCCEEDED_X2T(result) && oInputParams.m_bOutputConvertCorrupted)
 		{
+            std::cout << "fromInputParams error " << result << std::endl;
 			return AVS_FILEUTILS_ERROR_CONVERT_CORRUPTED;
 		}
 		else
 		{
+            std::cout << "fromInputParams end " << result << std::endl;
 			return result;
 		}
 	}
