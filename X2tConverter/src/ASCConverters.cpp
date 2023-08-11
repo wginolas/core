@@ -4513,18 +4513,22 @@ namespace NExtractTools
 				sXlsxFile = sFrom;
 				if(AVS_OFFICESTUDIO_FILE_SPREADSHEET_XLSX == nFormatFrom && params.getFromChanges())
 				{
+                    std::cout << "fromSpreadsheet 4a" << std::endl;
 					params.setFromChanges(false);
 					nRes = apply_changes(sFrom, sTo, NSDoctRenderer::DoctRendererFormat::FormatFile::XLST, sThemeDir, sXlsxFile, params);
 				}
 				nRes = zip2dir(sXlsxFile, sXlsxDir);
 				if(!SUCCEEDED_X2T(nRes))
 				{
+                    std::cout << "fromSpreadsheet 4b" << std::endl;
 					//check crypt 
 					COfficeFileFormatChecker OfficeFileFormatChecker;
 					if (OfficeFileFormatChecker.isOfficeFile(sFrom))
 					{
+                        std::cout << "fromSpreadsheet 4c" << std::endl;
 						if (OfficeFileFormatChecker.nFileType == AVS_OFFICESTUDIO_FILE_OTHER_MS_OFFCRYPTO)
 						{
+                            std::cout << "fromSpreadsheet 4d" << std::endl;
 							std::wstring sResultDecryptFile = sTemp	+ FILE_SEPARATOR_STR + L"uncrypt_file.oox";
 							// test protect
 							bool isOldPassword = params.hasPassword();
@@ -4536,14 +4540,17 @@ namespace NExtractTools
 							nRes = mscrypt2oox(sFrom, sResultDecryptFile, sTemp, params);
 							if(SUCCEEDED_X2T(nRes))
 							{
+                                std::cout << "fromSpreadsheet 4e" << std::endl;
 								nRes = zip2dir(sResultDecryptFile, sXlsxDir);
 								if(SUCCEEDED_X2T(nRes))
 								{
+                                    std::cout << "fromSpreadsheet 4f" << std::endl;
 									sXlsxFile = sResultDecryptFile;
 								}
 							}
 							else
 							{
+                                std::cout << "fromSpreadsheet 4g" << std::endl;
 								delete params.m_sPassword;
 								if (isOldPassword)
 									params.m_sPassword = new std::wstring(sOldPassword);
