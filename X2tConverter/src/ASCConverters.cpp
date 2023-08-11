@@ -4518,6 +4518,7 @@ namespace NExtractTools
 					nRes = apply_changes(sFrom, sTo, NSDoctRenderer::DoctRendererFormat::FormatFile::XLST, sThemeDir, sXlsxFile, params);
 				}
 				nRes = zip2dir(sXlsxFile, sXlsxDir);
+                std::cout << "fromSpreadsheet 4a1" << nRes << std::endl;
 				if(!SUCCEEDED_X2T(nRes))
 				{
                     std::cout << "fromSpreadsheet 4b" << std::endl;
