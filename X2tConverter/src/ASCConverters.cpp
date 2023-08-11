@@ -4421,6 +4421,7 @@ namespace NExtractTools
    }
 	_UINT32 fromXlstBin(const std::wstring &sFrom, const std::wstring &sTo, int nFormatTo, const std::wstring &sTemp, const std::wstring &sThemeDir, bool bPaid, InputParams& params)
    {
+       std::cout << "fromXlstBin start" << std::endl;
        _UINT32 nRes = 0;
        if(AVS_OFFICESTUDIO_FILE_TEAMLAB_XLSY == nFormatTo)
        {
@@ -4433,6 +4434,7 @@ namespace NExtractTools
        }
        else if(AVS_OFFICESTUDIO_FILE_CROSSPLATFORM_PDF == nFormatTo)
        {
+           std::cout << "fromXlstBin 1" << std::endl;
            NSDoctRenderer::DoctRendererFormat::FormatFile eFromType = NSDoctRenderer::DoctRendererFormat::FormatFile::XLST;
            nRes = doct_bin2pdf(eFromType, sFrom, sTo, sTemp, bPaid, sThemeDir, params);
        }
@@ -5799,7 +5801,7 @@ namespace NExtractTools
 		NSDoctRenderer::CDocBuilder::Dispose();
 		if (SUCCEEDED_X2T(result) && oInputParams.m_bOutputConvertCorrupted)
 		{
-            std::cout << "fromInputParams error " << result << std::endl;
+            std::cout << "fromInputParams corrupted " << result << std::endl;
 			return AVS_FILEUTILS_ERROR_CONVERT_CORRUPTED;
 		}
 		else
