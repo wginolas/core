@@ -1877,6 +1877,7 @@ namespace NExtractTools
 		std::wstring sXml = getDoctXml(eFromType, eToType, sFrom, sPdfBinFile, sImagesDirectory, sThemeDir, -1, _T(""), params);
 		std::wstring sResult;
 		bool bRes = oDoctRenderer.Execute(sXml, sResult);
+        std::cout << "doct_bin2pdf 1 " << bRes << std::endl;
 		if (sResult.find(L"error") != std::wstring::npos)
 		{
 			std::wcerr << _T("DoctRenderer:") << sResult << std::endl;
