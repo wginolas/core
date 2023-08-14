@@ -1867,6 +1867,7 @@ namespace NExtractTools
 	// doct_bin -> pdf
 	_UINT32 doct_bin2pdf(NSDoctRenderer::DoctRendererFormat::FormatFile eFromType, const std::wstring &sFrom, const std::wstring &sTo, const std::wstring &sTemp, bool bPaid, const std::wstring &sThemeDir, InputParams& params, const std::wstring& sDocxDir = L"")
 	{
+        std::cout << "doct_bin2pdf start" << std::endl;
 		_UINT32 nRes = 0;
 		NSDoctRenderer::DoctRendererFormat::FormatFile eToType = NSDoctRenderer::DoctRendererFormat::FormatFile::PDF;
 		std::wstring sTFileDir = NSDirectory::GetFolderPath(sFrom);
@@ -1910,6 +1911,7 @@ namespace NExtractTools
 		//удаляем sPdfBinFile, потому что он не в Temp
 		if (NSFile::CFileBinary::Exists(sPdfBinFile))
 			NSFile::CFileBinary::Remove(sPdfBinFile);
+        std::cout << "doct_bin2pdf end " << nRes << std::endl;
 		return nRes;
 	}
 	// doct_bin -> image
@@ -4437,6 +4439,7 @@ namespace NExtractTools
            std::cout << "fromXlstBin 1" << std::endl;
            NSDoctRenderer::DoctRendererFormat::FormatFile eFromType = NSDoctRenderer::DoctRendererFormat::FormatFile::XLST;
            nRes = doct_bin2pdf(eFromType, sFrom, sTo, sTemp, bPaid, sThemeDir, params);
+           std::cout << "fromXlstBin 2 " << nRes << std::endl;
        }
        else if(0 != (AVS_OFFICESTUDIO_FILE_IMAGE & nFormatTo))
        {
