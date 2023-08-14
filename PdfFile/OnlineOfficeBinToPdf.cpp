@@ -76,7 +76,9 @@ namespace NSOnlineOfficeBinToPdf
     }
     bool ConvertBinToPdf(CPdfFile* pPdf, const std::wstring& wsSrcFile, const std::wstring& wsDstFile, bool bBinary, CConvertFromBinParams* pParams)
 	{
-        std::cout << "ConvertBinToPdf start" << std::endl;
+        std::cout << "ConvertBinToPdf start ";
+        std::wcout << wsSrcFile;
+        std::cout << std::endl;
 		NSFile::CFileBinary oFile;
 		if (!oFile.OpenFile(wsSrcFile)) {
             std::cout << "ConvertBinToPdf 1" << std::endl;
