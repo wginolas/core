@@ -845,10 +845,15 @@ HRESULT CPdfFile::OnlineWordToPdf(const std::wstring& wsSrcFile, const std::wstr
 }
 HRESULT CPdfFile::OnlineWordToPdfFromBinary(const std::wstring& wsSrcFile, const std::wstring& wsDstFile, CConvertFromBinParams* pParams)
 {
+    std::cout << "CPdfFile::OnlineWordToPdfFromBinary start" << std::endl;
 #ifndef BUILDING_WASM_MODULE
-    if (!m_pInternal->pWriter || !NSOnlineOfficeBinToPdf::ConvertBinToPdf(this, wsSrcFile, wsDstFile, true, pParams))
+    std::cout << "CPdfFile::OnlineWordToPdfFromBinary 1" << std::endl;
+    if (!m_pInternal->pWriter || !NSOnlineOfficeBinToPdf::ConvertBinToPdf(this, wsSrcFile, wsDstFile, true, pParams)) {
+        std::cout << "CPdfFile::OnlineWordToPdfFromBinary FALSE" << std::endl;
         return S_FALSE;
+    }
 #endif
+    std::cout << "CPdfFile::OnlineWordToPdfFromBinary OK" << std::endl;
     return S_OK;
 }
 HRESULT CPdfFile::DrawImageWith1bppMask(IGrObject* pImage, NSImages::CPixJbig2* pMaskBuffer, const unsigned int& unMaskWidth, const unsigned int& unMaskHeight, const double& dX, const double& dY, const double& dW, const double& dH)
