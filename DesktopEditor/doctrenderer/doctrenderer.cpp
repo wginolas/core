@@ -535,6 +535,7 @@ namespace NSDoctRenderer
 
 		bool ExecuteScript(const std::string& strScript, const std::wstring& sCachePath, std::wstring& strError, std::wstring& strReturnParams)
 		{
+			std::cout << "ExecuteScript start" << std::endl;
 			LOGGER_SPEED_START
 
 					bool bIsBreak = false;
@@ -822,6 +823,7 @@ namespace NSDoctRenderer
 				// SAVE
 				if (!bIsBreak && !bIsMailMerge)
 				{
+					std::cout << "ExecuteScript 1" << std::endl;
 					bIsBreak = Doct_renderer_SaveFile(&m_oParams, pNative, context, args, strError, js_objectApi);
 				}
 
@@ -830,6 +832,7 @@ namespace NSDoctRenderer
 
 			context->Dispose();
 
+			std::cout << "ExecuteScript end " << bIsBreak << std::endl;
 			return bIsBreak ? false : true;
 		}
 
@@ -878,6 +881,7 @@ namespace NSDoctRenderer
 
 	bool CDoctrenderer::Execute(const std::wstring& strXml, std::wstring& strError)
 	{
+		std::cout << "CDoctrenderer::Execute start" << std::endl;
 		strError = L"";
 		m_pInternal->m_oParams.FromXml(strXml);
 		m_pInternal->m_arImagesInChanges.clear();
@@ -938,6 +942,8 @@ namespace NSDoctRenderer
 		default:
 			return false;
 		}
+
+		std::cout << "CDoctrenderer::Execute 1" << std::endl;
 
 		std::wstring strFileName = m_pInternal->m_oParams.m_strSrcFilePath;
 		if (!NSFile::CFileBinary::Exists(strFileName))
@@ -1003,6 +1009,7 @@ namespace NSDoctRenderer
 			strError = L"<result>" + sReturnParams + L"</result>";
 		}
 
+		std::cout << "CDoctrenderer::Execute end" << bResult << std::endl;
 		return bResult ? true : false;
 	}
 
