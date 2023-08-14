@@ -76,14 +76,18 @@ namespace NSOnlineOfficeBinToPdf
     }
     bool ConvertBinToPdf(CPdfFile* pPdf, const std::wstring& wsSrcFile, const std::wstring& wsDstFile, bool bBinary, CConvertFromBinParams* pParams)
 	{
+        std::cout << "ConvertBinToPdf start" << std::endl;
 		NSFile::CFileBinary oFile;
-		if (!oFile.OpenFile(wsSrcFile))
+		if (!oFile.OpenFile(wsSrcFile)) {
+            std::cout << "ConvertBinToPdf 1" << std::endl;
 			return false;
+        }
 
 		DWORD dwFileSize = oFile.GetFileSize();
 		BYTE* pFileContent = new BYTE[dwFileSize];
 		if (!pFileContent)
 		{
+            std::cout << "ConvertBinToPdf 2" << std::endl;
 			oFile.CloseFile();
 			return false;
 		}
@@ -113,6 +117,7 @@ namespace NSOnlineOfficeBinToPdf
 
 				if (bIsNeedDestroy)
 					RELEASEOBJECT(pParams);
+                std::cout << "ConvertBinToPdf 4" << std::endl;
 				return false;
 			}
 
@@ -127,6 +132,7 @@ namespace NSOnlineOfficeBinToPdf
 
 				if (bIsNeedDestroy)
 					RELEASEOBJECT(pParams);
+                std::cout << "ConvertBinToPdf 5" << std::endl;
 				return false;
 			}
 
@@ -140,9 +146,11 @@ namespace NSOnlineOfficeBinToPdf
 		if (!wsDstFile.empty())
 		{
 			if (0 != pPdf->SaveToFile(wsDstFile))
+                std::cout << "ConvertBinToPdf 6" << std::endl;
 				return false;
 		}
 
+        std::cout << "ConvertBinToPdf end" << std::endl;
 		return true;
 	}
 }
