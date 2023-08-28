@@ -180,7 +180,7 @@ namespace NSDoctRenderer
 
 	bool CDoctrenderer::Execute(const std::wstring& strXml, std::wstring& strError)
 	{
-		return false;
+		return true;
 	}
 
 	std::vector<std::wstring> CDoctrenderer::GetImagesInChanges()
